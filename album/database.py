@@ -11,7 +11,7 @@ class Users(db.Model):
     lname = db.Column(db.String, nullable = False)
     email = db.Column(db.String, nullable = False, unique = True)
     dob = db.Column(db.Date, nullable = False)
-    password = db.Colum(db.String, nullable = False)
+    password = db.Column(db.String, nullable = False)
 
 
     def __repr__(self) -> str:
@@ -30,6 +30,32 @@ class Albums(db.Model):
     def __repr__(self) -> str:
         return f"Albums({self.name})"
 
+
+
+class Photos(db.Modal):
+    __tablename__ = "photos"
+    id = db.Column(db.Integer, Primary_key = True)
+    name = db.Column(db.Integer, nullable = False)
+    size = db.Column(db.Integer, nullable = False)
+    last_opened = db.Column(db.DateTime, onupdate = func.now())
+    uploaded_date = db.Column(db.DateTime, default = func.now(), nullable = False)
+    album_id = db.Column(db.Integer, db.ForeignKey("albums.id"), nullable = False)       
+    __table_args__ = (db.UniqueConstraint('album_id', 'name', name='_album_id_name_uc'),)
+
+    def __repr__(self) -> str:
+        return f"Photos({self.name})"
+
+
+class Comments(db.Modal):
+    __tablename__ = " comments"
+    id = db.Column(db.Integer, Primary_key = True)
+    display_name = db.Column(db.Integer, nullable = False)
+    photo_id = db.Column(db.Integer, Primary_key = True)
+    user_id = db.Column(db.Integer, Primary_key = True)
+    comment = db.Column(db.String, nullable = False)
+
+    def __repr__(self) -> str:
+        return f"Comments({self.name})"
 
 def create_db():
     db.create_all()
