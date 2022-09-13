@@ -57,5 +57,4 @@ class Comments(db.Modal):
     def __repr__(self) -> str:
         return f"Comments({self.name})"
 
-def create_db():
-    db.create_all()
+
