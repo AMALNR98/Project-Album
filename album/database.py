@@ -33,7 +33,7 @@ class Albums(db.Model):
 
 class Photos(db.Model):
     __tablename__ = "photos"
-    id = db.Column(db.Integer, Primary_key = True)
+    id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.Integer, nullable = False)
     size = db.Column(db.Integer, nullable = False)
     last_opened = db.Column(db.DateTime, onupdate = func.now())
@@ -47,10 +47,10 @@ class Photos(db.Model):
 
 class Comments(db.Model):
     __tablename__ = " comments"
-    id = db.Column(db.Integer, Primary_key = True)
+    id = db.Column(db.Integer, primary_key = True)
     display_name = db.Column(db.Integer, nullable = False)
-    photo_id = db.Column(db.Integer, Primary_key = True)
-    user_id = db.Column(db.Integer, Primary_key = True)
+    photo_id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, primary_key = True)
     comment = db.Column(db.String, nullable = False)
 
     def __repr__(self) -> str:
