@@ -1,6 +1,5 @@
-from email.policy import default
-from enum import unique
-from flask_sqlalchemy import SQLAlchemy, func
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 db = SQLAlchemy()
 
@@ -32,7 +31,7 @@ class Albums(db.Model):
 
 
 
-class Photos(db.Modal):
+class Photos(db.Model):
     __tablename__ = "photos"
     id = db.Column(db.Integer, Primary_key = True)
     name = db.Column(db.Integer, nullable = False)
@@ -46,7 +45,7 @@ class Photos(db.Modal):
         return f"Photos({self.name})"
 
 
-class Comments(db.Modal):
+class Comments(db.Model):
     __tablename__ = " comments"
     id = db.Column(db.Integer, Primary_key = True)
     display_name = db.Column(db.Integer, nullable = False)
