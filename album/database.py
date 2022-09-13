@@ -1,7 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
+from album import db
 
-db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = "users"
