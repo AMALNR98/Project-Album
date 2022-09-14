@@ -1,0 +1,44 @@
+{% extends "auth_base.html" %}
+{% block form %}
+        
+<form method=post>
+  <dl>
+
+    <div class="mb-3">
+      <label for="fname" class="form-label">First Name</label>
+      {{ form.fname(class="form-control", id="fname", placeholder="first name") }}
+    </div>
+    
+    <div class="mb-3">
+      <label for="lname" class="form-label">Last Name</label>
+      {{ form.lname(class="form-control", id="lname", placeholder="last name") }}
+    </div>
+    
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      {{ form.email(class="form-control", id="email", placeholder="email address") }}
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Enter password</label>
+      {{ form.password(class="form-control", id="password", placeholder="password") }}
+    </div>
+
+    <div class="mb-3">
+      <label for="confirm" class="form-label">Confirm password</label>
+      {{ form.confirm(class="form-control", id="confirm", placeholder="Re-enter password") }}
+    </div>
+    
+    <div class="form-group"> <!-- Date input -->
+      <label class="control-label" for="date">Date Of Birth</label>
+      <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="date"/>
+    </div>
+    
+  
+
+  </dl>
+  <!-- <p><input type=submit value=Register> -->
+  <button type="submit" class="btn btn-primary">Register</button>
+</form>
+{% endblock %}
+
