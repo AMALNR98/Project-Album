@@ -1,6 +1,10 @@
+{% if error %}
+<p>{{error}}</p>
+{% endif %}
 <form method="post">
     {{form.email.label}}
     {{form.email}} <br>
     {{form.password.label}}
     {{form.password}}
+    <input type="submit" value="submit">
 </form>

@@ -1,19 +1,35 @@
 from sqlalchemy import func
+from sqlalchemy.ext.hybrid import hybrid_property
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash 
+
 
 db = SQLAlchemy()
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     fname = db.Column(db.String, nullable = False)
     lname = db.Column(db.String, nullable = False)
     email = db.Column(db.String, nullable = False, unique = True)
     dob = db.Column(db.Date, nullable = False)
-    password = db.Column(db.String, nullable = False)
+    _password = db.Column(db.String, nullable = False)
     albums = db.relationship("Album")
-    
 
+    @hybrid_property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, value):
+        """Store the password as a hash for security."""
+        self._password = generate_password_hash(value)
+
+    def check_password(self, value):
+        return check_password_hash(self._password, value)
 
     def __repr__(self) -> str:
         return f"User({self.fname} {self.lname})"
