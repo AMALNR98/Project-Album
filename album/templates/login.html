@@ -1,0 +1,20 @@
+
+{% block form %}
+
+<form method=post>
+<dl>
+    <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        {{ form.email(class="form-control", id="email", placeholder="email address") }}
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Enter password</label>
+        {{ form.password(class="form-control", id="password", placeholder="password") }}
+      </div>
+
+</dl>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+{% endblock %}
