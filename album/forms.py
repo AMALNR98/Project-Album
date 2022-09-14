@@ -12,4 +12,10 @@ class RegistrationForm(Form):
         validators.EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
-    accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
+
+
+class LoginForm(Form):
+    email = StringField('Email Address', [validators.Length(min=6, max=35)])
+    password = PasswordField('Password', [validators.DataRequired(),])
+
+
