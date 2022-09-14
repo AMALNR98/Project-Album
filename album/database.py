@@ -1,6 +1,7 @@
 from sqlalchemy import func
-from album import db
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = "users"
@@ -11,6 +12,7 @@ class User(db.Model):
     dob = db.Column(db.Date, nullable = False)
     password = db.Column(db.String, nullable = False)
     albums = db.relationship("Album")
+    
 
 
     def __repr__(self) -> str:
@@ -51,7 +53,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key = True)
     display_name = db.Column(db.Integer, nullable = False)
-    photo_id = db.Column(db.Integer, primary_key = True)
+    photo_id = db.Column(db.Integer, db.ForeignKey("photos.id"), primary_key = True)
     user_id = db.Column(db.Integer, primary_key = True)
     comment = db.Column(db.String, nullable = False)
 
