@@ -39,7 +39,8 @@ def album(album_name):
         photos = []
     else:
         photos = album.photos
-    return render_template('photos.html',user=current_user, photos = photos )
+    path = 'users/'  + str(current_user.id) + '/' + str(album.name)
+    return render_template('photos.html',user=current_user, photos = photos,  path=path)
 
 
 @album_bp.route('/add_album', methods=['POST', 'GET'])
@@ -72,4 +73,5 @@ def add_photo(album_name):
 
 
     return render_template('add_photo.html', user=current_user)
+
 

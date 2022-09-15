@@ -13,7 +13,7 @@ from .database import db
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../database.db'
-    app.config["UPLOADED_PHOTOS_DEST"] = "static/users"
+    app.config["UPLOADED_PHOTOS_DEST"] = "album/static/users"
     # app.config['SQLALCHEMY_ECHO'] = True
     app.secret_key = 'dev'
     db.init_app(app)

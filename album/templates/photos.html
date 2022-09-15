@@ -2,11 +2,12 @@
 {% block content %}
 <div>
     <p>{{get_flashed_messages()[0]}}</p>
-    <ol>
+    <ul>
         {% for photo in photos %}
-        <li > <a href="#">{{photo.name}}</a></li>
+        {% set photo_path = path + '/' + photo.name %}
+        <li > <a href="#"><img  style="height: 200px;width: 200px;" src='{{ url_for("static", filename=photo_path) }}' alt=""></a></li>
         {% endfor %}
 
-    </ol>
-    {% endblock %}
+    </ul>
 </div>
+    {% endblock %}
