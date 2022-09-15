@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     fname = db.Column(db.String, nullable = False)
     lname = db.Column(db.String, nullable = False)
     email = db.Column(db.String, nullable = False, unique = True)
-    dob = db.Column(db.Date, nullable = False)
+    dob = db.Column(db.String, nullable = False)
     _password = db.Column(db.String, nullable = False)
     albums = db.relationship("Album")
 
@@ -39,8 +39,8 @@ class Album(db.Model):
     __tablename__ = "albums"
     id = db.Column(db.Integer, primary_key =True)
     name = db.Column(db.String, nullable = False)
-    create_date = db.Column(db.DateTime, default = func.now(), nullable = False)
-    last_opened = db.Column(db.DateTime, onupdate = func.now())
+    create_date = db.Column(db.String, default = func.now(), nullable = False)
+    last_opened = db.Column(db.String, onupdate = func.now())
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable = False)
     photos = db.relationship("Photo")
     public = db.Column(db.Boolean, default=False, nullable=False)
