@@ -30,8 +30,10 @@ def register():
             db.session.commit()
             print('user added successfully')
             return redirect(url_for("auth.login"))
+    elif request.method == 'POST' and  form.validate() is False:
+        return render_template('register.html', form=form, errors='validation error')
     else:
-        return render_template('register.html', form=form)
+        return render_template('register.html', form=form, )
 
 @auth_bp.route('/login', methods=['POST', 'GET'])
 def login():
@@ -60,9 +62,3 @@ def logout():
     logout_user()
     return("logged out successfuly")
 
-
-@auth_bp.route('/test')
-@login_required
-def test():
-    return("u r probably logged in")
- 
