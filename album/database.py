@@ -39,6 +39,7 @@ class Album(db.Model):
     __tablename__ = "albums"
     id = db.Column(db.Integer, primary_key =True)
     name = db.Column(db.String, nullable = False)
+    description = db.Column(db.String, nullable=False)
     create_date = db.Column(db.String, default = func.now(), nullable = False)
     last_opened = db.Column(db.String, onupdate = func.now())
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable = False)
