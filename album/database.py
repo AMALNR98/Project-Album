@@ -17,7 +17,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable = False, unique = True)
     dob = db.Column(db.String, nullable = False)
     _password = db.Column(db.String, nullable = False)
-    albums = db.relationship("Album", lazy='dynamic')
+    albums = db.relationship("Album", lazy ="dynamic")
+
 
     @hybrid_property
     def password(self):
@@ -56,8 +57,8 @@ class Photo(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.Integer, nullable = False)
     size = db.Column(db.Integer, nullable = False)
-    last_opened = db.Column(db.DateTime, onupdate = func.now())
-    uploaded_date = db.Column(db.DateTime, default = func.now(), nullable = False)
+    last_opened = db.Column(db.String, onupdate = func.now())
+    uploaded_date = db.Column(db.String, default = func.now(), nullable = False)
     album_id = db.Column(db.Integer, db.ForeignKey("albums.id"), nullable = False)       
     public = db.Column(db.Boolean, default=False, nullable=False)
     comments = db.relationship("Comment")

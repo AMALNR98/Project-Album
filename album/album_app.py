@@ -1,4 +1,5 @@
 import os
+from flask import Blueprint, render_template, flash, request
 
 from flask import Blueprint, render_template, flash, request, redirect
 from flask_login import current_user
@@ -29,6 +30,16 @@ def test_upload():
         return render_template('upload_form.html')
     return render_template('upload_form.html')
 
+@album_bp.route('/<string:album_name>')
+def album(album_name):
+    # list_of_photos = Photo.query.filter_by(name = album_name).all()
+    album = current_user.albums.filter_by(name=album_name).first()
+    if album == None:
+        flash("Nothing to diplay")
+        photos = []
+    else:
+        photos = album.photos
+    return render_template('photos.html',user=current_user, photos = photos )
 
 
 @album_bp.route('/add_album', methods=['POST', 'GET'])

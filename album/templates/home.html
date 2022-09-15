@@ -3,7 +3,7 @@
 <div>
     <ol>
         {% for album in albums %}
-        <li > <a href="{{url_for('album.index' ,id=album.id)}}">{{album.name}}</a></li>
+        <li > <a href="{{url_for('album.album' ,album_name=album.name)}}">{{album.name}}</a></li>
         {% endfor %}
 
     </ol>
