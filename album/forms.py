@@ -1,14 +1,26 @@
 from sqlite3 import Date
 from tkinter.tix import Form
 from wtforms import  Form, BooleanField, StringField, PasswordField, validators, DateField
+from wtforms.validators import Email, Length, DataRequired, EqualTo
 
 class RegistrationForm(Form):
-    fname = StringField('First Name', [validators.Length(min=4, max=25)])
-    lname = StringField('Last Name', [validators.Length(min=4, max=25)])
-    dob = DateField('date of birth')
-    email = StringField('Email Address', [validators.Length(min=6, max=35)])
-    password = PasswordField('New Password', [
-        validators.DataRequired(),
-        validators.EqualTo('confirm', message='Passwords must match')
+    fname = StringField( [Length(min=4, max=25,), DataRequired()])
+    lname = StringField( [Length(min=0, max=25), DataRequired()])
+    dob = DateField( [DataRequired()])
+    email = StringField( [Length(min=6, max=120), DataRequired(), Email()])
+    password = PasswordField( [
+        DataRequired(),
+        EqualTo('confirm', message='Passwords must match'),
+        Length(min=6, max=35)
     ])
-    confirm = PasswordField('Repeat Password')
+    confirm = PasswordField( [DataRequired()])
+
+
+class LoginForm(Form):
+    email = StringField('Email Address', [Length(min=6, max=120), DataRequired(), Email()])
+    password = PasswordField('New Password', [
+        DataRequired(),
+        Length(min=6, max=35),])
+
+
+

@@ -1,17 +1,35 @@
 from sqlalchemy import func
-from album import db
+from sqlalchemy.ext.hybrid import hybrid_property
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash 
 
 
-class User(db.Model):
+db = SQLAlchemy()
+
+class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     fname = db.Column(db.String, nullable = False)
     lname = db.Column(db.String, nullable = False)
     email = db.Column(db.String, nullable = False, unique = True)
     dob = db.Column(db.Date, nullable = False)
-    password = db.Column(db.String, nullable = False)
+    _password = db.Column(db.String, nullable = False)
     albums = db.relationship("Album")
 
+    @hybrid_property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, value):
+        """Store the password as a hash for security."""
+        self._password = generate_password_hash(value)
+
+    def check_password(self, value):
+        return check_password_hash(self._password, value)
 
     def __repr__(self) -> str:
         return f"User({self.fname} {self.lname})"
@@ -51,7 +69,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key = True)
     display_name = db.Column(db.Integer, nullable = False)
-    photo_id = db.Column(db.Integer, primary_key = True)
+    photo_id = db.Column(db.Integer, db.ForeignKey("photos.id"), primary_key = True)
     user_id = db.Column(db.Integer, primary_key = True)
     comment = db.Column(db.String, nullable = False)
 
