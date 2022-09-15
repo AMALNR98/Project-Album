@@ -43,8 +43,8 @@ class Album(db.Model):
     last_opened = db.Column(db.DateTime, onupdate = func.now())
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable = False)
     photos = db.relationship("Photo")
+    public = db.Column(db.Boolean, default=False, nullable=False)
     __table_args__ = (db.UniqueConstraint('user_id', 'name', name='_user_id_name_uc'),)
-
     def __repr__(self) -> str:
         return f"Album({self.name})"
 
@@ -59,6 +59,7 @@ class Photo(db.Model):
     uploaded_date = db.Column(db.DateTime, default = func.now(), nullable = False)
     album_id = db.Column(db.Integer, db.ForeignKey("albums.id"), nullable = False)       
     photos = db.relationship("Comment")
+    public = db.Column(db.Boolean, default=False, nullable=False)
     __table_args__ = (db.UniqueConstraint('album_id', 'name', name='_album_id_name_uc'),)
 
     def __repr__(self) -> str:
