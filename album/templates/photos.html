@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 <div>
+    <p>{{get_flashed_messages()[0]}}</p>
     <ol>
         {% for photo in photos %}
-        <li > <a href="{{url_for('photo.gallary' ,id=photo.id)}}">{{photo.name}}</a></li>
+        <li > <a href="#">{{photo.name}}</a></li>
         {% endfor %}
 
     </ol>
