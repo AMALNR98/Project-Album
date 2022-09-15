@@ -16,6 +16,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(album_bp)
     app.cli.add_command(init_db)
+    app.secret_key = 'rff'
     return app
 
 
