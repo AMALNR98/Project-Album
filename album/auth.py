@@ -62,11 +62,3 @@ def logout():
     logout_user()
     return("logged out successfuly")
 
-@auth_bp.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        
-        flash('Thanks for registering')
-        return redirect(url_for('auth.login'))
-    return render_template('register.html', form=form)
