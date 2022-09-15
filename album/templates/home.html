@@ -1,1 +1,11 @@
 {% extends 'base.html' %}
+{% block content %}
+<div>
+    <ol>
+        {% for album in albums %}
+        <li > <a href="{{url_for('album.index' ,id=album.id)}}">{{album.name}}</a></li>
+        {% endfor %}
+
+    </ol>
+    {% endblock %}
+</div>
