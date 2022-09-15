@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>{{get_flashed_messages()[0]}}</p>
+    <form method="post" enctype=multipart/form-data class="m-3">
+        <input type="text" name="description"  placeholder="description">
+        <input type=file name='photo'>
+        <input type="submit" value="submit">
+    </form>
+
+{% endblock %}
