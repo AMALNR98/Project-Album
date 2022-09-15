@@ -1,6 +1,11 @@
 {% extends 'auth_base.html' %}
 
+
+
 {% block form %}
+{% if error %}
+<p>{{error}}</p>
+{% endif %}
 <form method=post>
 <dl>
     <div class="mb-3">
