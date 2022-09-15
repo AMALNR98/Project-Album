@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, flash, request
+import os
 
+from flask import Blueprint, render_template, flash, request, redirect
 from flask_login import current_user
 from flask_uploads import UploadSet, IMAGES
 from flask_login import login_required
 
-from album.database import Album, db
+from album.database import Album, Photo, db
 
 album_bp = Blueprint('album', '__name__')
 uploaded_images = UploadSet('photos', IMAGES)
@@ -12,7 +13,6 @@ uploaded_images = UploadSet('photos', IMAGES)
 @album_bp.route('/')
 def index():
     list_of_albums = current_user.albums 
-
     print(list_of_albums)
     print(current_user.id)
     return render_template('home.html', user=current_user, albums = list_of_albums)
@@ -42,3 +42,23 @@ def add_album():
         db.session.commit()
         flash("album added successfully")
     return render_template('add_album.html', user=current_user)
+
+
+@album_bp.route('/<string:album_name>/add_photo', methods=['POST', 'GET'])
+@login_required
+def add_photo(album_name):
+    if request.method == 'POST':
+        album = current_user.albums.filter_by(name=album_name).first()
+        if album:
+            file_path = uploaded_images.save(request.files['photo'], f"{current_user.id}/{album_name}")
+            file_name = os.path.basename(file_path)
+            size = 0
+            photo = Photo(name=file_name, size=size, album_id=album.id)
+            db.session.add(photo)
+            db.session.commit()
+        else:
+            flash("no such albums found")
+
+
+    return render_template('add_photo.html', user=current_user)
+
