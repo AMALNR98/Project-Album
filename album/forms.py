@@ -1,7 +1,11 @@
 from sqlite3 import Date
 from tkinter.tix import Form
-from wtforms import  Form, BooleanField, StringField, PasswordField, validators, DateField
+from wtforms import  Form, BooleanField, StringField, PasswordField, validators, DateField,FileField, SelectField
 from wtforms.validators import Email, Length, DataRequired, EqualTo
+from flask_wtf.file import FileRequired,FileAllowed
+
+
+from album.database import Photo
 
 class RegistrationForm(Form):
     fname = StringField( [Length(min=4, max=25,), DataRequired()])
@@ -22,5 +26,10 @@ class LoginForm(Form):
         DataRequired(),
         Length(min=6, max=35),])
 
+
+class PhotoForm(Form):
+    description = StringField([Length(min=2, max=100), DataRequired()])
+    photo = FileField(validators=[FileRequired(),FileAllowed('png','jpeg','jpg')])
+    status = SelectField(choices=[('private'), ('public')])
 
 
