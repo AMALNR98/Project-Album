@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
+<div class="container">
     <p>{{get_flashed_messages()[0]}}</p>
     <ul>
         {% for photo in photos %}
@@ -9,5 +9,21 @@
         {% endfor %}
 
     </ul>
+
+    <form action=""></form>
+</div>
+<div class="row">
+    {% for photo in photos %}
+    {% set photo_path = path + '/' + photo.name %}
+  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+    <div class="thumbnail">
+        <img
+        src='{{ url_for("static", filename=photo_path) }}'
+        class="w-100 shadow-1-strong rounded mb-4"
+        alt="Boat on Calm Water"/>
+    </div>
+  </div>
+    {% endfor %}
+    
 </div>
     {% endblock %}
