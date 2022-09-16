@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    
+    <p>{{photo_name}}</p>
+    {% set photo_path = path + '/' + photo.name %}
+    <img  style="height: 200px;width: 200px;" 
+        src='{{ url_for("static", filename=photo_path) }}' alt="">
+
+     
+        
+</div>
+    {% endblock %}
