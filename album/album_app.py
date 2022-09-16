@@ -30,17 +30,47 @@ def test_upload():
         return render_template('upload_form.html')
     return render_template('upload_form.html')
 
-@album_bp.route('/<string:album_name>')
-def album(album_name):
-    # list_of_photos = Photo.query.filter_by(name = album_name).all()
-    album = current_user.albums.filter_by(name=album_name).first()
-    if album == None:
-        flash("Nothing to diplay")
-        photos = []
-    else:
-        photos = album.photos
-    path = 'users/'  + str(current_user.id) + '/' + str(album.name)
-    return render_template('photos.html',user=current_user, photos = photos,  path=path)
+# @album_bp.route('/<string:album_name>')
+# def album(album_name):
+#     # list_of_photos = Photo.query.filter_by(name = album_name).all()
+#     album = current_user.albums.filter_by(name=album_name).first()
+#     if album == None:
+#         flash("Nothing to diplay")
+#         photos = []
+#     else:
+#         photos = album.photos
+#     path = 'users/'  + str(current_user.id) + '/' + str(album.name)
+#     return render_template('photos.html',user=current_user, photos = photos,  path=path)
+
+
+@album_bp.route('/<int:user_id>/<string:album_name>')
+def album(user_id,album_name):
+    if current_user.is_authenticated:
+        if current_user.id == user_id:
+            album = current_user.albums.filter_by(name=album_name).first()
+            if album:
+                photos = album.photos
+                path = 'users/'  + str(current_user.id) + '/' + str(album.name)
+            else:
+                photos = []
+                flash ('no such album')
+                path = None
+            return render_template('photos.html', user=current_user, photos=photos, path=path)
+        else:
+            album = current_user.album.filter_by(name=album_name).first()
+            if album:
+                if album.public:
+                    photos = album.photos
+                    path = 'users/'  + str(current_user.id) + '/' + str(album.name)
+                else:
+                    flash ('this is a private album')
+                    photos = []
+                    path = None
+            else:
+                photos = []
+                flash("no such album")
+                path = None
+            return render_template('photos.html', user=current_user, photos=photos)
 
 
 @album_bp.route('/add_album', methods=['POST', 'GET'])
