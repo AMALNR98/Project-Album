@@ -1,3 +1,4 @@
+import logging
 import os
 from flask import Blueprint, render_template, flash, request
 
@@ -6,7 +7,7 @@ from flask_login import current_user
 from flask_uploads import UploadSet, IMAGES
 from flask_login import login_required
 
-from album.database import Album, Photo, db
+from album.database import Album, Photo, User, db
 
 album_bp = Blueprint('album', '__name__')
 uploaded_images = UploadSet('photos', IMAGES)
@@ -74,4 +75,17 @@ def add_photo(album_name):
 
     return render_template('add_photo.html', user=current_user)
 
+@album_bp.route('/<int:user_id>/<string:album_name>/<string:photo_name>')
+@login_required
+def photo_view(album_name,photo_name):
+    if current_user.is_authenticated:
+        album = current_user.albums.filter_by(name=album_name).first()
+        print(album)
+        photo = album.Photo(name= name )
+        return render_template('photo.html', user = current_user )
+
+    else:
+        flash("photo is private")        
+        return render_template('photo.html')
+    
 
