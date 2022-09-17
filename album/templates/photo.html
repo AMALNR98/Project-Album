@@ -1,13 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
+
     
-    <p>{{photo_name}}</p>
     {% set photo_path = path + '/' + photo.name %}
-    <img  style="height: 200px;width: 200px;" 
-        src='{{ url_for("static", filename=photo_path) }}' alt="">
+    <div class="carousel-item active">
+      <img
+        src='{{ url_for("static", filename=photo_path) }}'
+        class="d-block w-70 h-50"
+        alt='{{photo_name}}'
+      />
+    
 
      
         
 </div>
     {% endblock %}
+
+
+    {% block sidebar %}
+    <p>{{photo.name}}</p>
+    <p>{{photo.description}}</p>
+    {% endblock %}
+
