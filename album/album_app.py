@@ -8,7 +8,7 @@ from flask_login import login_required
 
 
 from album.database import Album, Photo, db, User
-from album.forms import AlbumForm
+from album.forms import AlbumForm, PhotoForm
 
 album_bp = Blueprint('album', '__name__')
 uploaded_images = UploadSet('photos', IMAGES)
@@ -21,15 +21,15 @@ def index():
 
 
 
-@album_bp.route('/upload', methods=['POST', 'GET'])
-def test_upload():
-    current_album = 4
-    if request.method == 'POST':
-        # print(request.files['photo'])
-        file_path = uploaded_images.save(request.files['photo'], f"{current_user.id}/{current_album}")
+# @album_bp.route('/upload', methods=['POST', 'GET'])
+# def test_upload():
+#     current_album = 4
+#     if request.method == 'POST':
+#         # print(request.files['photo'])
+#         file_path = uploaded_images.save(request.files['photo'], f"{current_user.id}/{current_album}")
         
-        return render_template('upload_form.html')
-    return render_template('upload_form.html')
+#         return render_template('upload_form.html')
+#     return render_template('upload_form.html')
 
 
 @album_bp.route('/<int:user_id>/<string:album_name>')
@@ -83,9 +83,10 @@ def add_album(user_id):
 
 @album_bp.route('/<int:user_id>/albums', methods=['GET',])
 def view_albums(user_id):
+    form = AlbumForm(request.form)
     if current_user.is_authenticated and current_user.id == user_id:
         albums = current_user.albums
-        return render_template('albums.html', user=current_user, albums=albums)
+        return render_template('albums.html', user=current_user, albums=albums ,form = form)
     else:
         user = User.query.get(user_id)
         if user:
@@ -97,12 +98,13 @@ def view_albums(user_id):
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/photos', methods=['GET' ])
 def view_album(user_id,album_name):
+    form = PhotoForm(request.form )
     if current_user.is_authenticated and current_user.id == user_id:
         album = current_user.albums.filter_by(name=album_name).first()
         if album:
             photos = album.photos
             path = 'users/'  + str(current_user.id) + '/' + str(album.name)
-            return render_template('photos.html', user=current_user, photos=photos, path=path)
+            return render_template('photos.html', user=current_user, photos=photos, path=path, form = form,album_name = album_name)
         else:
             return render_template('404.html'), 404
         
@@ -159,11 +161,11 @@ def view_photo(user_id,album_name,photo_name):
             user = User.query.filter_by(id=user.id)
             if album:
                 if album.public:
-                    photo = Photo.query.filter_by(name = photo.name)
+                    photo = Photo.query.filter_by(name = photo.name, description = photo.description)
                     if photo:
                         if photo.public:
                             path = 'users/'  + str(user.id) + '/' + str(album.name) 
-                            return render_template('photo.html',photo = photo,user = current_user, path = path)
+                            return render_template('photo.html',photo = photo,user = current_user, path = path, description = photo.description)
                         else:
                             return '404'
                     else:
