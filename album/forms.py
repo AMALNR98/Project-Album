@@ -1,4 +1,6 @@
-from sqlite3 import Date
+
+
+
 from wtforms import  Form,  BooleanField, StringField, PasswordField, validators, DateField, SelectField, FileField
 from wtforms.validators import Email, Length, DataRequired, EqualTo
 from  flask_wtf.file import FileRequired, FileAllowed
@@ -23,6 +25,11 @@ class LoginForm(Form):
         DataRequired(),
         Length(min=6, max=35),])
 
+
+class PhotoForm(Form):
+    description = StringField([Length(min=2, max=100), DataRequired()])
+    photo = FileField(validators=[FileRequired(),FileAllowed(['png','jpeg','jpg'],)])
+    status = SelectField(choices=[('private'), ('public')])
 
 class AlbumForm(Form):
     name = StringField('name', [Length(min=1, max=50), DataRequired()])
