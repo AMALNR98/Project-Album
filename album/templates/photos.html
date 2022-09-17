@@ -1,17 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-    <p>{{get_flashed_messages()[0]}}</p>
-    <ul>
-        {% for photo in photos %}
-        {% set photo_path = path + '/' + photo.name %}
-        <li > <a href="photo.html"><img  style="height: 200px;width: 200px;" src='{{ url_for("static", filename=photo_path) }}' alt=""></a></li>
-        {% endfor %}
 
-    </ul>
-
-    <form action=""></form>
-</div>
 <div class="row">
     {% for photo in photos %}
     {% set photo_path = path + '/' + photo.name %}
@@ -24,6 +13,12 @@
     </div>
   </div>
     {% endfor %}
+    <form action="{{url_for('album.add_photo', user_id=current_user.id, album_name = album_name)}}" method="post" class="m-3" enctype="multipart/form-data">
+        <input type="text" name="description"  placeholder="description">
+        {{form.photo}}
+        {{form.status}}
+        <input type="submit" value="submit">
+    </form>
     
 </div>
     {% endblock %}
