@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     dob = db.Column(db.String, nullable = False)
     _password = db.Column(db.String, nullable = False)
     albums = db.relationship("Album", lazy ="dynamic")
+    
 
 
     @hybrid_property
@@ -44,7 +45,7 @@ class Album(db.Model):
     create_date = db.Column(db.String, default = func.now(), nullable = False)
     last_opened = db.Column(db.String, onupdate = func.now())
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable = False)
-    photos = db.relationship("Photo")
+    photos = db.relationship("Photo",lazy ="dynamic")
     public = db.Column(db.Boolean, default=False, nullable=False)
     __table_args__ = (db.UniqueConstraint('user_id', 'name', name='_user_id_name_uc'),)
     def __repr__(self) -> str:
