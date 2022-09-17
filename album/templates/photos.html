@@ -5,7 +5,7 @@
     <ul>
         {% for photo in photos %}
         {% set photo_path = path + '/' + photo.name %}
-        <li > <a href="#"><img  style="height: 200px;width: 200px;" src='{{ url_for("static", filename=photo_path) }}' alt=""></a></li>
+        <li > <a href="photo.html"><img  style="height: 200px;width: 200px;" src='{{ url_for("static", filename=photo_path) }}' alt=""></a></li>
         {% endfor %}
 
     </ul>
