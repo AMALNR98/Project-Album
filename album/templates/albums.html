@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <ol>
+        {% for album in albums %}
+        <li > <a href="{{url_for('album.view_album', user_id=user.id ,album_name=album.name)}}">{{album.name}}</a></li>
+        {% endfor %}
+
+    </ol>
+
+</div> 
+
+
+{% endblock %}

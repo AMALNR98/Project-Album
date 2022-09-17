@@ -18,8 +18,6 @@ def index():
     albums = current_user.albums 
     return render_template('home.html', user=current_user, albums = albums, form=form)
 
-
-
        
 @album_bp.route('/<int:user_id>/albums', methods=['POST',])
 @login_required
@@ -50,7 +48,6 @@ def view_albums(user_id):
         else:
             return render_template('404.html')
 
-    
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/photos', methods=['GET' ])
 def view_album(user_id,album_name):
@@ -77,9 +74,6 @@ def view_album(user_id,album_name):
         else:
             return render_template('404.html'), 404
             
- 
-
-
 
 
 
