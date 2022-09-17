@@ -28,7 +28,7 @@ class LoginForm(Form):
 
 class PhotoForm(Form):
     description = StringField([Length(min=2, max=100), DataRequired()])
-    photo = FileField(validators=[FileRequired(),FileAllowed('png','jpeg','jpg')])
+    photo = FileField(validators=[FileRequired(),FileAllowed(['png','jpeg','jpg'],)])
     status = SelectField(choices=[('private'), ('public')])
 
 class AlbumForm(Form):
