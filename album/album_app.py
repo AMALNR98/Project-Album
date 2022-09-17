@@ -16,20 +16,11 @@ uploaded_images = UploadSet('photos', IMAGES)
 @album_bp.route('/')
 def index():
     form = AlbumForm(request.form)
-    albums = current_user.albums 
-    return render_template('home.html', user=current_user, albums = albums, form=form)
-
-
-
-# @album_bp.route('/upload', methods=['POST', 'GET'])
-# def test_upload():
-#     current_album = 4
-#     if request.method == 'POST':
-#         # print(request.files['photo'])
-#         file_path = uploaded_images.save(request.files['photo'], f"{current_user.id}/{current_album}")
-        
-#         return render_template('upload_form.html')
-#     return render_template('upload_form.html')
+    if current_user.is_authenticated:
+        albums = current_user.albums
+        return render_template('home.html', user=current_user, albums = albums, form=form)
+    else:
+        return render_template('home.html', user=current_user, albums = None, form=form)
 
 
 @album_bp.route('/<int:user_id>/<string:album_name>')
@@ -143,7 +134,7 @@ def add_photo(user_id, album_name):
         return render_template('404.html'), 404
 
 
-@album_bp.route('/<int:user_id>/<string:album_name>/photos/<string:photo_name>')
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/photos/<string:photo_name>')
 def view_photo(user_id,album_name,photo_name):
         photo = None
         if current_user.is_authenticated and current_user.id == user_id :
@@ -159,10 +150,11 @@ def view_photo(user_id,album_name,photo_name):
             else:
                 return "album not found"
         else:
-            user = User.query.filter_by(id=user.id)
+            user = User.query.get(user_id)
+            album = user.albums.filter_by(name=album_name).first()
             if album:
                 if album.public:
-                    photo = Photo.query.filter_by(name = photo.name, description = photo.description)
+                    photo = Photo.query.filter_by(name = photo.name)
                     if photo:
                         if photo.public:
                             path = 'users/'  + str(user.id) + '/' + str(album.name) 
