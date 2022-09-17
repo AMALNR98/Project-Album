@@ -123,23 +123,40 @@ def add_photo(album_name):
 @album_bp.route('/<int:user_id>/<string:album_name>/photos/<string:photo_name>')
 def view_photo(user_id,album_name,photo_name):
         photo = None
-        print("user id =",user_id)
-        # print(current_user)
-        print("current_user.id",current_user.id)
         if current_user.is_authenticated and current_user.id == user_id :
             album = current_user.albums.filter_by(name=album_name).first()
-            print(current_user)
-            print(album.id)            
-            photo = album.photos.filter_by(name = photo_name).first()
-            path = 'users/'  + str(current_user.id) + '/' + str(album.name) 
-            print('path =',path)
-            print("photo.name=",photo.name)
-            print("photo id =",photo.id)
-            return render_template('photo.html',photo = photo,user = current_user, path = path)
+            if album:           
+                photo = album.photos.filter_by(name = photo_name).first()
+                if photo:
+                    path = 'users/'  + str(current_user.id) + '/' + str(album.name) 
+                   
+                    return render_template('photo.html',photo = photo,user = current_user, path = path)
+                else:
+                    return "photo not found"
+            else:
+                return "album not found"
         else:
-            flash("photo is private")        
+            user = User.query.filter_by(id=user.id)
+            if album:
+                if album.public:
+                    photo = Photo.query.filter_by(name = photo.name)
+                    if photo:
+                        if photo.public:
+                            path = 'users/'  + str(user.id) + '/' + str(album.name) 
+                            return render_template('photo.html',photo = photo,user = current_user, path = path)
+                        else:
+                            return '404'
+                    else:
+                        return "Photos is private"
+                else: 
+                    return '404'
+            else:
+                return '404'
+        
+                            
+
               
-            return "text"
+            # return "text"
             # return render_template('photo.html', user = current_user , photo_name=photo.name)
 
         
