@@ -36,8 +36,18 @@
   </div>
 </nav>
    {% endblock %}
-   {% block content %}
-   
+   {% block breadcrumb %}
    {% endblock %}
+  <div class="row">
+    <div class="col-3">
+      {% block sidebar %}
+      {% endblock %} 
+    </div>
+    <div class="col">
+    {% block content %}
+    {% endblock %}
+   </div>
+  </div>
+   
 </body>
 </html>
