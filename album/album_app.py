@@ -31,23 +31,24 @@ def add_album(user_id):
         album = Album(name=form.name.data, description=form.description.data, user_id=current_user.id, public = public)
         db.session.add(album)
         db.session.commit()
+        print('album added successfully')
         flash("album added successfully")
     return redirect(url_for('album.index'))
 
 
 @album_bp.route('/<int:user_id>/albums', methods=['GET',])
 def view_albums(user_id):
+    form = AlbumForm(request.form)
     if current_user.is_authenticated and current_user.id == user_id:
         albums = current_user.albums
-        return render_template('albums.html', user=current_user, albums=albums)
+        return render_template('albums.html', user=current_user, albums=albums, form=form)
     else:
         user = User.query.get(user_id)
         if user:
-            albums = user.filter_by(public=True)
+            albums = user.query.filter_by(public=True)
             return render_template('albums.html', user=user, albums=albums)
         else:
             return render_template('404.html')
-
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/photos', methods=['GET' ])
 def view_album(user_id,album_name):
