@@ -17,8 +17,8 @@
 
     
     {% set photo_path = path + '/' + photo.name %}
-    <div class="carousel-item active">
-      <a href="{{ url_for('static', filename=photo_path) }}"><img
+    <div class="carousel-item active" >
+      <a href="{{ url_for('static', filename=photo_path) }}"><img class="mx-auto d-block"
         src='{{ url_for("static", filename=photo_path) }}'
         class="d-block w-50 h-50"
         alt='{{photo_name}}'
