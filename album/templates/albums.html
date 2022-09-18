@@ -7,7 +7,14 @@
         {% endfor %}
 
     </ol>
-
+    {% block breadcrumb %}
+    <nav class="breadcrumb">
+     <ol class="breadcrumb">
+         <li class="breadcrumb-item active"><a href="/">Home</a></li>
+         <li class="breadcrumb-item active"><a href="/">Albums</a></li>
+     </ol>
+ </nav>
+    {% endblock %}
 </div> 
 <form action="{{url_for('album.add_album', user_id=current_user.id)}}" method="post" class="m-3">
     <input type="text" name="name" placeholder="album name">
