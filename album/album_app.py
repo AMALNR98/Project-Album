@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, render_template, flash, request, url_for
 
-from flask import Blueprint, render_template, flash, request, redirect
+from flask import Blueprint, render_template, flash, request, redirect 
 from flask_login import current_user
 from flask_uploads import UploadSet, IMAGES
 from flask_login import login_required
@@ -144,7 +144,7 @@ def view_photo(user_id,album_name,photo_name):
                 if photo:
                     path = 'users/'  + str(current_user.id) + '/' + str(album.name) 
                    
-                    return render_template('photo.html',photo = photo,user = current_user, path = path)
+                    return render_template('photo.html',photo = photo,user = current_user, path = path, album_name=album_name)
                 else:
                     return "photo not found"
             else:
