@@ -4,11 +4,12 @@
     
     {% set photo_path = path + '/' + photo.name %}
     <div class="carousel-item active">
-      <img
+      <a href="{{ url_for('static', filename=photo_path) }}"><img
         src='{{ url_for("static", filename=photo_path) }}'
         class="d-block w-50 h-50"
         alt='{{photo_name}}'
       />
+      </a>
     
 
      
@@ -19,6 +20,10 @@
 
     {% block sidebar %}
     <p>{{photo.name}}</p>
+    {% if photo.description %}
     <p>{{photo.description}}</p>
+    {% else %}
+    <p>no descriptions</p>
+    {% endif %}
     {% endblock %}
 

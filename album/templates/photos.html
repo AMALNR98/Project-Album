@@ -4,21 +4,16 @@
 <div class="row">
     {% for photo in photos %}
     {% set photo_path = path + '/' + photo.name %}
-  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-    <div class="thumbnail">
-        <img
-        src='{{ url_for("static", filename=photo_path) }}'
-        class="w-100 shadow-1-strong rounded mb-4"
-        alt="Boat on Calm Water"/>
-    </div>
-  </div>
+    {% include 'includes/image_card.html'%} 
     {% endfor %}
-    <form action="{{url_for('album.add_photo', user_id=current_user.id, album_name = album_name)}}" method="post" class="m-3" enctype="multipart/form-data">
+
+    {% include 'includes/post_album_card.html' %}
+    <!-- <form action="{{url_for('album.add_photo', user_id=current_user.id, album_name = album_name)}}" method="post" class="m-3" enctype="multipart/form-data">
         <input type="text" name="description"  placeholder="description">
         {{form.photo}}
         {{form.status}}
         <input type="submit" value="submit">
-    </form>
+    </form> -->
     
 </div>
     {% endblock %}
