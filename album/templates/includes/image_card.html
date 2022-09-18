@@ -1,0 +1,9 @@
+
+  <div class="col-6 col-md-4 col-lg-3 mb-4">
+      <div class="card mx-auto text-center">
+        <a href="{{url_for('album.view_photo', user_id=user.id, album_name=album_name, photo_name=photo.name)}}">
+            <img height="150px" class="card-img" src="{{url_for('static', filename=photo_path)}}" alt="{{photo.name}}">
+        </a>
+        
+      </div>
+    </div>

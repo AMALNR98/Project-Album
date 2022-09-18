@@ -39,7 +39,7 @@ def register():
 def login():
     print(current_user)
     if current_user.is_authenticated:
-        return("already logged in")
+        return("method not allowed"), 405
     error = None
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -60,5 +60,5 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return("logged out successfuly")
+    return redirect(url_for('album.index'))
 

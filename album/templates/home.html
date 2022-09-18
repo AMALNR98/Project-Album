@@ -8,9 +8,12 @@
  </nav>
     {% endblock %}
 <div class="row">
-{% for album in albums %}
-    {% include 'includes/card.html'%}
-{% endfor %}
+{% if user.is_authenticated %}
+    {% for album in albums %}
+        {% include 'includes/album_card.html'%}
+    {% endfor %}
+{% else %}
+{% endif %}
     
 </div>
 {% endblock %}
