@@ -5,6 +5,17 @@
     {% for photo in photos %}
     {% set photo_path = path + '/' + photo.name %}
   <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+    {% block breadcrumb %}
+    <nav class="breadcrumb">
+     <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="/">Home</a></li>
+         <li class="breadcrumb-item">albums</li>
+         
+         <!-- use url_for -->
+        
+     </ol>
+ </nav>
+    {% endblock %}
     <div class="thumbnail">
         <img
         src='{{ url_for("static", filename=photo_path) }}'
