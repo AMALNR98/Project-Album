@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
+{% block breadcrumb %}
+    <nav class="breadcrumb">
+     <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="/">Home</a></li>
+         <li class="breadcrumb-item"><a href="{{url_for('album.view_album',
+           user_id=user.id ,album_name=album_name)}}">albums</a></li>
+         
+         <li class="breadcrumb-item active">photo</li>
+         <!-- use url_for -->
+        
+     </ol>
+ </nav>
+    {% endblock %}
+
 
     
     {% set photo_path = path + '/' + photo.name %}
@@ -16,21 +30,7 @@
         
 </div>
     {% endblock %}
-    {% block breadcrumb %}
-    <nav class="breadcrumb">
-     <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="/">Home</a></li>
-         <li class="breadcrumb-item"><a href="{{url_for('album.view_album',
-           user_id=user.id ,album_name=album_name)}}">albums</a></li>
-         
-         <li class="breadcrumb-item active">photo</li>
-         <!-- use url_for -->
-        
-     </ol>
- </nav>
-    {% endblock %}
-
-
+    
     {% block sidebar %}
     <p>{{photo.name}}</p>
     {% if photo.description %}
