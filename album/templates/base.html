@@ -34,16 +34,18 @@
     <a href="{{url_for('auth.login')}}">login</a>
     {% endif %}
   </div>
-</nav>
-   {% endblock %}
-   {% block breadcrumb %}
-   {% endblock %}
+
   <div class="row">
-    <div class="col-3">
+    <div class="col-4">
       {% block sidebar %}
       {% endblock %} 
     </div>
     <div class="col">
+      
+      <div class = "row"></div>
+    </nav>
+    {% endblock %}
+    
     {% block content %}
     {% endblock %}
    </div>
