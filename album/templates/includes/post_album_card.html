@@ -1,0 +1,42 @@
+  <div class="col-6 col-md-4 col-lg-3 mb-4">
+      <div class="card mx-auto text-center">
+          <input height="150px" type="image" data-mdb-toggle="modal" data-mdb-target="#modalPhotoInput" class="card-img-top" src="{{url_for('static', filename='logos/add_image_placeholder.png')}}" >
+      <div class="card-body">
+          <p class="card-title lead">add photo</p>
+      </div>
+      </div>
+  </div>
+
+
+         
+<!-- Modal -->
+<div class="modal fade" id="modalPhotoInput" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form enctype="multipart/form-data" action="{{url_for('album.add_photo', album_name=album_name, user_id=user.id )}}" method="post">
+          <label for="description">description</label>
+          {{form.description}}
+          {{form.status}}
+          {{form.photo}}
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>         
+
+<!-- <form enctype="multipart/form-data" action="{{url_for('album.add_photo', user_id=user.id, album_name=album_name)}}" method="post">
+        <input type="image" height="150px" class="card-img-top" src="" alt="&#xf007">
+        <input style="display: none" type="file" name="photo" id="addAlbumInput" onchange="form.submit()">
+      </form> -->
