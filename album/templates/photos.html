@@ -15,6 +15,9 @@
     {% set photo_path = path + '/' + photo.name %}
     {% include 'includes/image_card.html' %}
     {% endfor %}
+    {% if current_user.authenticated %}
+    {% include 'includes/add_photo.html %}
+    {% endif %}
 
     
     
