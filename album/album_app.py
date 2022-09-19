@@ -90,7 +90,7 @@ def view_albums(user_id):
         else:
             return render_template('404.html')
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>/photos', methods=['GET' ])
+@album_bp.route('/<int:user_id>/albums/album/<string:album_name>', methods=['GET' ])
 def view_album(user_id,album_name):
     form = PhotoForm(request.form )
     if current_user.is_authenticated and current_user.id == user_id:
@@ -125,7 +125,7 @@ def view_album(user_id,album_name):
 
 
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>/photos', methods=['POST'])
+@album_bp.route('/<int:user_id>/albums/album/<string:album_name>', methods=['POST'])
 @login_required
 def add_photo(user_id, album_name):
     album = current_user.albums.filter_by(name=album_name).first()
@@ -142,7 +142,7 @@ def add_photo(user_id, album_name):
         return render_template('404.html'), 404
 
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>/photos/<string:photo_name>')
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/photo/<string:photo_name>')
 def view_photo(user_id,album_name,photo_name):
         photo = None
         if current_user.is_authenticated and current_user.id == user_id :
@@ -175,10 +175,3 @@ def view_photo(user_id,album_name,photo_name):
                     return '404'
             else:
                 return '404'
-        
-                            
-
-
-@album_bp.route('/add_photo')
-def test_upload():
-    return render_template('upload_form.html', user_id=1, album_name="cooking")
