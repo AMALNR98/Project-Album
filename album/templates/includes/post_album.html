@@ -1,0 +1,45 @@
+
+<div class="col-6 col-md-4 col-lg-3 mb-4">
+    <div class="card mx-auto text-center">
+        <!-- <a href=""><img height="150px" class="card-img-top" src="{{url_for('static', filename='logos/add_image_placeholder.png')}}" alt="Sample Title"></a> -->
+        <input height="150px" type="image" data-mdb-toggle="modal" data-mdb-target="#modalAlbumInput" class="card-img-top" src="{{url_for('static', filename='logos/add_album_placeholder.png')}}" >
+        <div class="card-body">
+          <p class="card-title lead">add album</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAlbumInput" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add an album</h5>
+        <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <form  enctype="multipart/form-data" action="{{url_for('album.add_album', user_id=user.id )}}" method="post">
+            {{ form.csrf_token }}
+            <div class="form-outline mb-2">
+                {{form.name(class='form-control')}}
+                <label class="form-label" for="name">Your Album Name</label>
+            </div>
+         <div class="form-outline mb-2">
+            {{form.description(class='form-control')}}
+            <label class="form-label" for="description">Give a Description</label>
+         </div> 
+         <div class="form-outline">
+          {{form.status(class='form-select')}}
+         </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>         
+

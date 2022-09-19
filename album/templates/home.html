@@ -8,10 +8,11 @@
  </nav>
     {% endblock %}
 <div class="row">
-{% if user.is_authenticated %}
+{% if current_user.is_authenticated %}
     {% for album in albums %}
         {% include 'includes/album_card.html'%}
     {% endfor %}
+    {% include 'includes/post_album.html' %}
 {% else %}
 {% endif %}
     

@@ -1,9 +1,9 @@
   <div class="col-6 col-md-4 col-lg-3 mb-4">
       <div class="card mx-auto text-center">
           <input height="150px" type="image" data-mdb-toggle="modal" data-mdb-target="#modalPhotoInput" class="card-img-top" src="{{url_for('static', filename='logos/add_image_placeholder.png')}}" >
-      <div class="card-body">
+      <!-- <div class="card-body">
           <p class="card-title lead">add photo</p>
-      </div>
+      </div> -->
       </div>
   </div>
 
@@ -14,21 +14,29 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Upload Your Photo</h5>
         <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form enctype="multipart/form-data" action="{{url_for('album.add_photo', album_name=album_name, user_id=user.id )}}" method="post">
-          <label for="description">description</label>
-          {{form.description}}
-          {{form.status}}
-          {{form.photo}}
+          {{ form.csrf_token }}
+         <div class="form-outline mb-2">
+            {{form.description(class='form-control')}}
+            <label class="form-label" for="description">Give a Description</label>
+         </div> 
+        <div class="form-outline mb-2">
+          {{form.photo(class='form-control')}}
+         </div>
+         <div class="form-outline">
+            {{form.status(class='form-select')}}
+         </div>
+         
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
       </div>
         </form>
       </div>
