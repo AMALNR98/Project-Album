@@ -3,7 +3,6 @@ from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import current_user, login_required
 from flask_uploads import UploadSet, IMAGES
 
-
 from album.database import Album, Photo, db, User
 from album.forms import AlbumForm, PhotoForm
 
@@ -130,7 +129,7 @@ def add_photo(user_id, album_name):
         file_path = uploaded_images.save(request.files['photo'], f"{current_user.id}/{album_name}")
         file_name = os.path.basename(file_path)
         size = 0
-        photo = Photo(name=file_name, size=size, album_id=album.id)
+        photo = Photo(name=file_name, size=size, album_id=album.id, description=request.form.get('description'))
         db.session.add(photo)
         db.session.commit()
         flash(f"{file_name} added successfully")
