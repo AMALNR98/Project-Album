@@ -22,7 +22,7 @@
         <a style="color: grey;" class="navbar-brand mt-2 mt-lg-0" href="{{url_for('album.index')}}">Hamon Albums</a>
       </h1>
     </div>
-    {% if user.is_authenticated %}
+    {% if current_user.is_authenticated %}
     <div class="d-flex mb-2 align-items-center">
       <div class="dropdown">
         <a
@@ -41,7 +41,7 @@
           aria-labelledby="navbarDropdownMenuAvatar"
         >
           <li>
-            <a class="dropdown-item" href="#">{{user.fname}}</a>
+            <a class="dropdown-item" href="#">{{current_user.fname}}</a>
           </li>
           <li>
             <a class="dropdown-item" href="#">Settings</a>
@@ -53,8 +53,8 @@
       </div>
     </div>
     {% else %}
-    <button><a href="{{url_for('auth.login')}}">Login</a></button>
-    <button><a href="{{url_for('auth.register')}}">Register</a></button>
+    <a class="btn btn-primary" href="{{url_for('auth.login')}}">Login</a>
+    <a class="btn btn-primary ms-1" href="{{url_for('auth.register')}}">Register</a>
     {% endif %}
   </div>
 </nav>
