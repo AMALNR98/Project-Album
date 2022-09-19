@@ -19,20 +19,26 @@ def register():
     form = RegistrationForm(request.form)
 
     if request.method == 'POST' and form.validate():
+        print(form.validate())
+        print(form.validate_on_submit())
         user = User(fname=form.fname.data, lname=form.lname.data, email=form.email.data, dob=form.dob.data, password=form.password.data)
         if db.session.query(
             User.query.filter_by(email=form.email.data).exists()
             ).scalar():
             print('user already exists')
-            return render_template('register.html', error='already registered', form=form)
+            
+            return render_template('register.html', form=form)
         else:
             db.session.add(user)
             db.session.commit()
             print('user added successfully')
             return redirect(url_for("auth.login"))
-    elif request.method == 'POST' and  form.validate() is False:
-        return render_template('register.html', form=form, errors='validation error')
+    elif request.method == 'POST' and  not form.validate():
+        print('invalid form')
+        print(form.errors)
+        return render_template('register.html', form=form,)
     else:
+        print(form.errors)
         return render_template('register.html', form=form, )
 
 @auth_bp.route('/login', methods=['POST', 'GET'])
@@ -45,12 +51,14 @@ def login():
     if request.method == 'POST' and form.validate():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
-            error = ('no such email')
+            print(('no such email'))
+            form.email.errors = ['email not found',]
         elif not user.check_password(form.password.data):
-            error = "invalid password"
+            form.password.errors = ['wrong password :(',]
         else:
             login_user(user)
-            return "login successful"
+            return redirect(url_for('album.index'))
+            
 
             
     return render_template('login.html', form=form, error=error)
