@@ -1,10 +1,7 @@
 import os
-from flask import Blueprint, render_template, flash, request, url_for
-
-from flask import Blueprint, render_template, flash, request, redirect 
-from flask_login import current_user
+from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask_login import current_user, login_required
 from flask_uploads import UploadSet, IMAGES
-from flask_login import login_required
 
 
 from album.database import Album, Photo, db, User
