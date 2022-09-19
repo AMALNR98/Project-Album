@@ -15,7 +15,7 @@
     {% set photo_path = path + '/' + photo.name %}
     {% include 'includes/image_card.html' %}
     {% endfor %}
-    {% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated  and current_user.id == user.id %}
     {% include 'includes/post_image_card.html' %}
     {% endif %}
 
