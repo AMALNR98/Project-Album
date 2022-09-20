@@ -3,8 +3,8 @@ from flask import Blueprint, render_template, flash, request, redirect, url_for,
 from flask_login import current_user, login_required
 from flask_uploads import UploadSet, IMAGES
 
-from album.database import Album, Photo, db, User
-from album.forms import AlbumForm, PhotoForm
+from album.database import Album, Photo, db, User ,Comment
+from album.forms import AlbumForm, CommentForm, PhotoForm
 
 album_bp = Blueprint("album", "__name__")
 uploaded_images = UploadSet("photos", IMAGES)
@@ -50,6 +50,8 @@ def add_album(user_id):
         "GET",
     ],
 )
+
+
 def view_albums(user_id):
     form = AlbumForm(request.form)
     if current_user.is_authenticated and current_user.id == user_id:
@@ -73,6 +75,7 @@ def view_albums(user_id):
         else:
             return render_template("404.html")
 
+
 @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['DELETE',])
 @login_required
 def delete_album(user_id,album_name):
@@ -84,6 +87,7 @@ def delete_album(user_id,album_name):
 
     else :
         return 'not authorized'
+
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['GET' ])
 def view_album(user_id,album_name):
@@ -172,8 +176,6 @@ def view_photo(user_id,album_name,photo_name):
                 return '404', 404
 
 
-
-
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', methods=['DELETE',])
 @login_required
 def delete_photo(user_id,album_name,photo_name):
@@ -189,3 +191,36 @@ def delete_photo(user_id,album_name,photo_name):
             return "404",404
     else:
         return "404",404
+
+
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>',  methods=['POST'])
+@login_required
+def post_comment(user_id,album_name,photo_name):
+    form = CommentForm(request.form)
+    print(current_user)
+    if current_user.id == user_id:
+        album = current_user.albums.filter_by(name=album_name).first()
+        if album:           
+            photo = album.photos.filter_by(name = photo_name).first()
+            if photo:
+                comment = Comment(
+                    display_name = current_user.name,
+                    comment = comment.form.get("comment")
+                )
+                return "comment added"
+
+
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>/comments/comment_id',  methods=['POST'])
+def delete_comment(user_id,album_name,photo_name,comment_id):
+    if current_user.id == user_id:
+        album = current_user.albums.filter_by(name=album_name).first()
+        if album:
+            photo = album.photos.filter_by(name = photo_name).first()
+            if photo:
+                comment = album.comments.filter_by(id = comment_id).first()
+                db.session.delete(comment)
+                db.session.commit()
+        return redirect(url_for("album.index"))
+    else:
+        return 'not authorized'
+    
