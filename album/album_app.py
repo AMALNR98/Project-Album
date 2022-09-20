@@ -118,8 +118,6 @@ def view_album(user_id,album_name):
         else:
             return render_template('404.html')
 
-            
-
 
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['POST'])
@@ -165,10 +163,10 @@ def view_photo(user_id,album_name,photo_name):
                             path = 'users/'  + str(user.id) + '/' + str(album.name) 
                             return render_template('photo.html',photo = photo, current_user=current_user, user=user, path=path, description = photo.description)
                         else:
-                            return '404'
+                            return '404', 404
                     else:
                         return "Photos is private"
                 else: 
-                    return '404'
+                    return '404', 404
             else:
-                return '404'
+                return '404', 404
