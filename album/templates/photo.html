@@ -1,41 +1,84 @@
-{% extends 'base.html' %}
-{% block content %}
-{% block breadcrumb %}
-    <nav class="breadcrumb">
-     <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="/">Home</a></li>
-         <li class="breadcrumb-item"><a href="{{url_for('album.view_album',
-           user_id=user.id ,album_name=album_name)}}">albums</a></li>
-         
-         <li class="breadcrumb-item active">photo</li>
-         <!-- use url_for -->
-        
-     </ol>
- </nav>
-    {% endblock %}
+{% extends 'base.html' %} {% block content %} {% block breadcrumb %}
+<nav class="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item">
+      <a
+        href="{{url_for('album.view_album',
+           user_id=user.id ,album_name=album_name)}}"
+        >albums</a
+      >
+    </li>
 
-
-    
-    {% set photo_path = path + '/' + photo.name %}
-    <div class="carousel-item active" >
-      <a href="{{ url_for('static', filename=photo_path) }}"><img class="mx-auto d-block img-fluid"
-        src='{{ url_for("static", filename=photo_path) }}'
-        class="d-block w-50 h-50"
-        alt='{{photo_name}}'/>
-      </a>
-    
-
-     
-        
+    <li class="breadcrumb-item active">photo</li>
+  </ol>
+</nav>
+{% endblock %}
+{% set photo_path = path + '/' + photo.name %}
+<div class="carousel-item active">
+  <a href="{{ url_for('static', filename=photo_path) }}"
+    ><img
+      class="mx-auto d-block img-fluid"
+      src='{{ url_for("static", filename=photo_path) }}'
+      class="d-block w-50 h-50"
+      alt="{{photo_name}}"
+    />
+  </a>
 </div>
-    {% endblock %}
-    
-    {% block sidebar %}
-    <p>{{photo.name}}</p>
-    {% if photo.description %}
-    <p>{{photo.description}}</p>
-    {% else %}
-    <p>no descriptions</p>
-    {% endif %}
-    {% endblock %}
 
+<div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+        <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="modalBody" class="alert alert-warning" role="alert">
+           Warning: you are about to delete this photo from your album
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button id="deletePhotoButton" type="button" class="btn btn-primary">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{url_for('static', filename='js/script.js')}}"></script>
+
+{% endblock %}
+
+{% block sidebar %}
+<ul class="list-group">
+  {% if current_user.is_authenticated %}
+  <div class="btn btn-group w-100" role="group">
+    
+    <button
+      class="btn btn-default"
+      title="edit details"
+      type="button"
+      data-mdb-toggle="modal"
+      data-mdb-target="#deleteModalCenter"
+    >
+      <i class="fa fa-trash"></i>
+    </button>
+    <button
+      class="btn btn-default"
+      id="deletePhotoButton"
+      title="delete photo"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <li class="list-group-item">
+    description : {{photo.description if photo.description else 'None'}}
+  </li>
+  {% endif %}
+</ul>
+
+{% endblock %}

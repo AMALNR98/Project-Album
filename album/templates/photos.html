@@ -61,8 +61,8 @@
                     </button>
                 </div>
         {% endif %}
-        <li class="list-group-item">name {{album_name}}</li>
-        <li class="list-group-item">description {{album.description}}</li>
+        <li class="list-group-item">name: {{album_name}}</li>
+        <li class="list-group-item">description:{{album.description if album.description else None}}</li>
         {%if album.public %}
         <li class="list-group-item">copy public url <i class="fa fa-copy"></i></li>
         {% endif %}

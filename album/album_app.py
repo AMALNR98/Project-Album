@@ -174,7 +174,7 @@ def view_photo(user_id,album_name,photo_name):
 
 
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', )
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', methods=['DELETE',])
 @login_required
 def delete_photo(user_id,album_name,photo_name):
     if current_user.id == user_id:
@@ -183,7 +183,8 @@ def delete_photo(user_id,album_name,photo_name):
             photo = album.photos.filter_by(name = photo_name).first()
             db.session.delete(photo)
             db.session.commit()
-            return render_template('photos.html', current_user=current_user, user=current_user,album_name = album_name)
+            # return render_template('photos.html', current_user=current_user, user=current_user,album_name = album_name)
+            return '', 204
         else:
             return "404",404
     else:

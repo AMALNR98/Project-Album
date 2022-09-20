@@ -14,8 +14,34 @@ function deleteAlbum(e) {
 
 }
 
+function deletePhoto(e) {
+    console.log('something')
+    e.preventDefault();
+    let url = window.location.href;
+    fetch(url, {method: 'DELETE'})
+    .then(r => {
+        if (r.status == 204) {
+        let modalBody = document.getElementById('modalBody');
+        modalBody.className = "alert alert-success"
+        modalBody.innerText = "Success: Photo deleted successfully, redirecting..."
+        setTimeout(()=> {
+            redirectUrl = url.substring(0, url.lastIndexOf('/'));
+            setTimeout(() => window.location = redirectUrl, 2000)
+        })
+
+        }
+        
+    })
+}
+
 function main() {
-    document.getElementById('deleteAlbumButton').onclick = e => deleteAlbum(e);
+    if (document.getElementById('deleteAlbumButton') != null ){
+        document.getElementById('deleteAlbumButton').onclick = e => deleteAlbum(e);
+    }
+
+    if (document.getElementById('deletePhotoButton') != null) {
+        document.getElementById('deletePhotoButton').onclick = e => deletePhoto(e);
+    }
 }
 
 main()
