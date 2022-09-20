@@ -204,6 +204,7 @@ def delete_photo(user_id,album_name,photo_name):
     else:
         return "404",404
 
+
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>',  methods=['POST'])
 @login_required
 def post_comment(user_id,album_name,photo_name):
@@ -221,3 +222,17 @@ def post_comment(user_id,album_name,photo_name):
                 return "comment added"
 
 
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>/comments/comment_id',  methods=['POST'])
+def delete_comment(user_id,album_name,photo_name,comment_id):
+    if current_user.id == user_id:
+        album = current_user.albums.filter_by(name=album_name).first()
+        if album:
+            photo = album.photos.filter_by(name = photo_name).first()
+            if photo:
+                comment = album.comments.filter_by(id = comment_id).first()
+                db.session.delete(comment)
+                db.session.commit()
+        return redirect(url_for("album.index"))
+    else :
+        return 'not authorized'
+    
