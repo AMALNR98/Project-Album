@@ -19,9 +19,10 @@ def index():
         return render_template('home.html', user=current_user, albums = None, form=form)
 
 
-@album_bp.route('/<int:user_id>/<string:album_name>')
+@album_bp.route('/<int:user_id>/albums/<string:album_name>')
 def album(user_id,album_name):
     if current_user.is_authenticated:
+        form = PhotoForm(request.form)
         if current_user.id == user_id:
             album = current_user.albums.filter_by(name=album_name).first()
             if album:
@@ -31,7 +32,7 @@ def album(user_id,album_name):
                 flash ('no such album')
                 path = None
                 return '404',404
-            return render_template('photos.html', current_user=current_user, user=current_user, photos=photos, path=path)
+            return render_template('photos.html', current_user=current_user, user=current_user, photos=photos, path=path, form=form)
         else:
             album = current_user.album.filter_by(name=album_name).first()
             if album:
@@ -86,7 +87,7 @@ def view_albums(user_id):
         else:
             return render_template('404.html')
 
-@album_bp.route('/<int:user_id>/albums/album/<string:album_name>', methods=['GET' ])
+@album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['GET' ])
 def view_album(user_id,album_name):
     form = PhotoForm(request.form )
     if current_user.is_authenticated and current_user.id == user_id:
@@ -121,7 +122,7 @@ def view_album(user_id,album_name):
 
 
 
-@album_bp.route('/<int:user_id>/albums/album/<string:album_name>', methods=['POST'])
+@album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['POST'])
 @login_required
 def add_photo(user_id, album_name):
     album = current_user.albums.filter_by(name=album_name).first()
@@ -138,7 +139,7 @@ def add_photo(user_id, album_name):
         return render_template('404.html'), 404
 
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>/photo/<string:photo_name>')
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>')
 def view_photo(user_id,album_name,photo_name):
         photo = None
         if current_user.is_authenticated and current_user.id == user_id :
