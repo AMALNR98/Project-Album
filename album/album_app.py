@@ -172,3 +172,15 @@ def view_photo(user_id,album_name,photo_name):
                     return '404', 404
             else:
                 return '404', 404
+
+
+@album_bp.route('/<int:user_id>/<string:album_name>')
+@login_required
+def delete_album(user_id,album_name):
+    if current_user.id == user_id:
+        album = current_user.albums.filter_by(name=album_name).first()
+        db.session.delete(album)
+        db.session.commit()
+        return redirect(url_for("album.index"))
+    else :
+        return 'not authorized'
