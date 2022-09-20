@@ -18,8 +18,55 @@
     {% if current_user.is_authenticated  and current_user.id == user.id %}
     {% include 'includes/post_image_card.html' %}
     {% endif %}
-
-    
-    
 </div>
-    {% endblock %}
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+        <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="modalBody" class="alert alert-warning" role="alert">
+           Warning: you are about to delete the album along with all the photos inside it
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button id="deleteAlbumButton" type="button" class="btn btn-primary">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block sidebar %}
+
+    <ul class="list-group">
+        {% if current_user.is_authenticated %}
+                <div class="btn btn-group w-100" role="group" aria-label="Basic example">
+                    <button id="deleteAlbumButton" title="delete album"  class="btn " type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModalCenter" class="btn btn-secondary"><i class="fa fa-trash"></i></button>
+                    <button id="editDetailsButton" title="edit details" class="btn btn-default" type="button" data-mdb-toggle="modal" data-mdb-target="" class="btn btn-secondary"><i class="fa fa-edit"></i></button>
+                    <button id="editStatusButton" class="btn btn-default" 
+                    {%if album.public %}
+                    title="make private"
+                    {% else %}
+                    title="make public"
+                    {% endif %}
+                     type="button" data-mdb-toggle="modal" data-mdb-target="" class="btn btn-secondary">
+                        <i class="fa fa-users"></i>
+                    </button>
+                </div>
+        {% endif %}
+        <li class="list-group-item">name {{album_name}}</li>
+        <li class="list-group-item">description {{album.description}}</li>
+        {%if album.public %}
+        <li class="list-group-item">copy public url <i class="fa fa-copy"></i></li>
+        {% endif %}
+        <script src="{{url_for('static', filename='js/script.js')}}"></script>
+    </ul>
+</div>
+{% endblock %}

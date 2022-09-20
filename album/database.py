@@ -46,7 +46,7 @@ class Album(db.Model):
     last_opened = db.Column(db.String, onupdate = func.now())
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable = False)
     public = db.Column(db.Boolean, default=False, nullable=False)
-    photos = db.relationship("Photo", lazy='dynamic')
+    photos = db.relationship("Photo", lazy='dynamic', cascade="all,delete")
     __table_args__ = (db.UniqueConstraint('user_id', 'name', name='_user_id_name_uc'),)
     def __repr__(self) -> str:
         return f"Album({self.name})"

@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify
 from flask_login import current_user, login_required
 from flask_uploads import UploadSet, IMAGES
 
@@ -60,6 +60,7 @@ def view_albums(user_id):
             user=current_user,
             albums=albums,
             form=form,
+
         )
 
     else:
@@ -72,6 +73,18 @@ def view_albums(user_id):
         else:
             return render_template("404.html")
 
+@album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['DELETE',])
+@login_required
+def delete_album(user_id,album_name):
+    if current_user.id == user_id:
+        album = current_user.albums.filter_by(name=album_name).first()
+        db.session.delete(album)
+        db.session.commit()
+        return '', 204
+
+    else :
+        return 'not authorized'
+
 @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['GET' ])
 def view_album(user_id,album_name):
     form = PhotoForm(request.form )
@@ -81,38 +94,23 @@ def view_album(user_id,album_name):
             photos = album.photos
             path = 'users/'  + str(current_user.id) + '/' + str(album.name)
             print(path)
-            return render_template('photos.html', current_user=current_user, user=current_user, photos=photos, path=path, form = form,album_name = album_name)
+            return render_template('photos.html', current_user=current_user, user=current_user, photos=photos, path=path, form = form,album_name = album_name, album=album)
         else:
             return render_template("404.html"), 404
 
     else:
-        user = User.query.get(user_id)
-        if user:
-            album = user.albums.filter_by(name=album_name).first()
-            if album:
-                if album.public:
-                    photos = album.photos.filter_by(public=True).all()
-                    path = 'users/'  + str(user.id) + '/' + str(album.name)
-                    return render_template('photos.html', current_user=current_user, user=user, photos=photos, path=path, form = form,album_name = album_name)
-                else:
-                    flash("this is a private album")
-                    photos = []
-                    path = None
-                    return render_template(
-                        "photos.html",
-                        current_user=current_user,
-                        user=user,
-                        photos=photos,
-                        path=path,
-                        form=form,
-                        album_name=album_name,
-                    )
+        user = User.query.get_or_404(user_id)
+        album = user.albums.filter_by(name=album_name).first()
+        if album:
+            if album.public:
+                photos = album.photos.filter_by(public=True).all()
+                path = 'users/'  + str(user.id) + '/' + str(album.name)
+                return render_template('photos.html', current_user=current_user, user=user, photos=photos, path=path, form = form,album_name = album_name, album=album)
             else:
-                return render_template("404.html"), 404
+                return 'private', 401
         else:
-            return render_template('404.html')
-
-
+            return render_template("404.html"), 404
+        
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['POST'])
 @login_required
@@ -174,18 +172,9 @@ def view_photo(user_id,album_name,photo_name):
                 return '404', 404
 
 
-@album_bp.route('/<int:user_id>/<string:album_name>')
-@login_required
-def delete_album(user_id,album_name):
-    if current_user.id == user_id:
-        album = current_user.albums.filter_by(name=album_name).first()
-        db.session.delete(album)
-        db.session.commit()
-        return redirect(url_for("album.index"))
-    else :
-        return 'not authorized'
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>')
+
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', )
 @login_required
 def delete_photo(user_id,album_name,photo_name):
     if current_user.id == user_id:
