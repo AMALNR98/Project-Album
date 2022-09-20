@@ -61,7 +61,6 @@ def view_album(user_id,album_name):
         if album:
             photos = album.photos
             path = 'users/'  + str(current_user.id) + '/' + str(album.name)
-            print('herererererere')
             print(path)
             return render_template('photos.html', current_user=current_user, user=current_user, photos=photos, path=path, form = form,album_name = album_name)
         else:
@@ -75,7 +74,6 @@ def view_album(user_id,album_name):
                 if album.public:
                     photos = album.photos.filter_by(public=True).all()
                     path = 'users/'  + str(user.id) + '/' + str(album.name)
-                    print('herererererere')
                     return render_template('photos.html', current_user=current_user, user=user, photos=photos, path=path, form = form,album_name = album_name)
                 else:
                     flash ('this is a private album')
