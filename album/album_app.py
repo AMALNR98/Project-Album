@@ -166,7 +166,7 @@ def view_album(user_id,album_name):
             else:
                 return render_template("404.html"), 404
         else:
-            return render_template("404.html")
+            return render_template('404.html')
 
 
 
@@ -211,29 +211,20 @@ def view_photo(user_id,album_name,photo_name):
                 return "photo not found"
             
         else:
-            return "album not found"
-    else:
-        user = User.query.get(user_id)
-        album = user.albums.filter_by(name=album_name).first()
-        if album:
-            if album.public:
-                photo = Photo.query.filter_by(name=photo.name)
-                if photo:
-                    if photo.public:
-                        path = "users/" + str(user.id) + "/" + str(album.name)
-                        return render_template(
-                            "photo.html",
-                            photo=photo,
-                            current_user=current_user,
-                            user=user,
-                            path=path,
-                            description=photo.description,
-                        )
+            user = User.query.get(user_id)
+            album = user.albums.filter_by(name=album_name).first()
+            if album:
+                if album.public:
+                    photo = Photo.query.filter_by(name = photo.name)
+                    if photo:
+                        if photo.public:
+                            path = 'users/'  + str(user.id) + '/' + str(album.name) 
+                            return render_template('photo.html',photo = photo, current_user=current_user, user=user, path=path, description = photo.description)
+                        else:
+                            return '404', 404
                     else:
-                        return "404"
-                else:
-                    return "Photos is private"
+                        return "Photos is private"
+                else: 
+                    return '404', 404
             else:
-                return "404"
-        else:
-            return "404"
+                return '404', 404
