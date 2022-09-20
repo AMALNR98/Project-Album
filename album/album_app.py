@@ -1,10 +1,13 @@
+from crypt import methods
 import os
+from unicodedata import name
+
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import current_user, login_required
 from flask_uploads import UploadSet, IMAGES
 
-from album.database import Album, Photo, db, User
-from album.forms import AlbumForm, PhotoForm
+from album.database import Album, Photo, db, User ,Comment
+from album.forms import AlbumForm, CommentForm, PhotoForm
 
 album_bp = Blueprint("album", "__name__")
 uploaded_images = UploadSet("photos", IMAGES)
@@ -185,6 +188,7 @@ def delete_album(user_id,album_name):
     else :
         return 'not authorized'
 
+
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>')
 @login_required
 def delete_photo(user_id,album_name,photo_name):
@@ -199,3 +203,21 @@ def delete_photo(user_id,album_name,photo_name):
             return "404",404
     else:
         return "404",404
+
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>',  methods=['POST'])
+@login_required
+def post_comment(user_id,album_name,photo_name):
+    form = CommentForm(request.form)
+    print(current_user)
+    if current_user.id == user_id:
+        album = current_user.albums.filter_by(name=album_name).first()
+        if album:           
+            photo = album.photos.filter_by(name = photo_name).first()
+            if photo:
+                comment = Comment(
+                    display_name = current_user.name,
+                    comment = comment.form.get("comment")
+                )
+                return "comment added"
+
+
