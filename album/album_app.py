@@ -19,40 +19,6 @@ def index():
         return render_template('home.html', user=current_user, albums = None, form=form)
 
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>')
-def album(user_id,album_name):
-    if current_user.is_authenticated:
-        form = PhotoForm(request.form)
-        if current_user.id == user_id:
-            album = current_user.albums.filter_by(name=album_name).first()
-            if album:
-                photos = album.photos
-                path = 'users/'  + str(current_user.id) + '/' + str(album.name)
-            else:
-                flash ('no such album')
-                path = None
-                return '404',404
-            return render_template('photos.html', current_user=current_user, user=current_user, photos=photos, path=path, form=form)
-        else:
-            album = current_user.album.filter_by(name=album_name).first()
-            if album:
-                if album.public:
-                    photos = album.photos
-                    path = 'users/'  + str(current_user.id) + '/' + str(album.name)
-                    return render_template('photos.html', current_user=current_user,user=current_user, photos=photos)
-                else:
-                    photos = []
-                    path = None
-                    return '403', 403
-            else:
-                photos = []
-                flash("no such album")
-                path = None
-                return '404', 404
-
-
-
-
        
 @album_bp.route('/<int:user_id>/albums', methods=['POST',])
 @login_required
@@ -95,6 +61,8 @@ def view_album(user_id,album_name):
         if album:
             photos = album.photos
             path = 'users/'  + str(current_user.id) + '/' + str(album.name)
+            print('herererererere')
+            print(path)
             return render_template('photos.html', current_user=current_user, user=current_user, photos=photos, path=path, form = form,album_name = album_name)
         else:
             return render_template('404.html'), 404
@@ -107,6 +75,7 @@ def view_album(user_id,album_name):
                 if album.public:
                     photos = album.photos.filter_by(public=True).all()
                     path = 'users/'  + str(user.id) + '/' + str(album.name)
+                    print('herererererere')
                     return render_template('photos.html', current_user=current_user, user=user, photos=photos, path=path, form = form,album_name = album_name)
                 else:
                     flash ('this is a private album')
