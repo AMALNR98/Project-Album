@@ -1,72 +1,93 @@
 from flask import Blueprint, request, url_for, flash, redirect, render_template
-from flask_login import LoginManager , login_user, logout_user, login_required, current_user
+from flask_login import (
+    LoginManager,
+    login_user,
+    logout_user,
+    login_required,
+    current_user,
+)
 from datetime import date
 
 from .database import User, db
-from .forms import RegistrationForm, LoginForm 
+from .forms import RegistrationForm, LoginForm
 
 
 login_manager = LoginManager()
-auth_bp = Blueprint('auth', '__name__', url_prefix='/auth')
+auth_bp = Blueprint("auth", "__name__", url_prefix="/auth")
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
 
 
-@auth_bp.route('/register', methods=['POST', 'GET'])
+@auth_bp.route("/register", methods=["POST", "GET"])
 def register():
     form = RegistrationForm(request.form)
 
-    if request.method == 'POST' and form.validate():
+    if request.method == "POST" and form.validate():
         print(form.validate())
         print(form.validate_on_submit())
-        user = User(fname=form.fname.data, lname=form.lname.data, email=form.email.data, dob=form.dob.data, password=form.password.data)
+        user = User(
+            fname=form.fname.data,
+            lname=form.lname.data,
+            email=form.email.data,
+            dob=form.dob.data,
+            password=form.password.data,
+        )
         if db.session.query(
             User.query.filter_by(email=form.email.data).exists()
-            ).scalar():
-            print('user already exists')
-            
-            return render_template('register.html', form=form)
+        ).scalar():
+            print("user already exists")
+
+            return render_template("register.html", form=form)
         else:
             db.session.add(user)
             db.session.commit()
-            print('user added successfully')
+            print("user added successfully")
             return redirect(url_for("auth.login"))
-    elif request.method == 'POST' and  not form.validate():
-        print('invalid form')
+    elif request.method == "POST" and not form.validate():
+        print("invalid form")
         print(form.errors)
-        return render_template('register.html', form=form,)
+        return render_template(
+            "register.html",
+            form=form,
+        )
     else:
         print(form.errors)
-        return render_template('register.html', form=form, )
+        return render_template(
+            "register.html",
+            form=form,
+        )
 
-@auth_bp.route('/login', methods=['POST', 'GET'])
+
+@auth_bp.route("/login", methods=["POST", "GET"])
 def login():
     print(current_user)
     if current_user.is_authenticated:
-        return("method not allowed"), 405
+        return ("method not allowed"), 405
     error = None
     form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if request.method == "POST" and form.validate():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
-            print(('no such email'))
-            form.email.errors = ['email not found',]
+            print(("no such email"))
+            form.email.errors = [
+                "email not found",
+            ]
         elif not user.check_password(form.password.data):
-            form.password.errors = ['wrong password :(',]
+            form.password.errors = [
+                "wrong password :(",
+            ]
         else:
             login_user(user)
-            return redirect(url_for('album.index'))
-            
+            return redirect(url_for("album.index"))
 
-            
-    return render_template('login.html', form=form, error=error)
+    return render_template("login.html", form=form, error=error)
 
 
-@auth_bp.route('/logout')
+@auth_bp.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('album.index'))
-
+    return redirect(url_for("album.index"))
