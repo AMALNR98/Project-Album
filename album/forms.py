@@ -65,3 +65,7 @@ class AlbumForm(FlaskForm):
     name = StringField("name", [Length(min=1, max=50), DataRequired()])
     description = TextAreaField("description", [Length(min=0, max=50)])
     status = SelectField("status", choices=["Private", "Public"])
+
+class CommentForm(FlaskForm):
+    display_name = StringField("name",[Length(min = 1, max =50), DataRequired()])
+    comment = TextAreaField("description", [Length(min=0, max=50)])
