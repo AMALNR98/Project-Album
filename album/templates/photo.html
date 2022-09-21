@@ -76,13 +76,33 @@
   </div>
   {% endif %}
   <li class="list-group-item">
-    description : {{photo.description if photo.description else 'None'}}
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>name</td>
+          <td style="word-wrap: break-word;max-width: 100px">{{photo.name}}</td>
+        </tr>
+        <tr>
+          <td>description</td>
+          <td >{{photo.description}}</td>
+        </tr>
+        <tr>
+          <td>uploaded datetime</td>
+          <td >{{photo.uploaded_date}}</td>
+        </tr>
+      </tbody>
+    </table>
   </li>
+  {% if photo.public %}
   <div class="btn btn-group w-100" role="group">
       <button id="photoLikeButton" class="btn btn-default">
         <i id="{{user.id ~ album_name ~ photo.name}}"  class="fa fa-heart heartIcon"> {{photo.likes}}</i>
       </button>
+      <button id="copyButton"  class="btn btn-default">
+        <i class="fa fa-copy"></i>
+      </button>
   </div>
+  {% endif %}
 
 </ul>
 

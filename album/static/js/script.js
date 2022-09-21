@@ -72,6 +72,7 @@ function getLikeResponse(status, icon) {
             }
                
         })
+        .catch(e => console.log(e))
 }
 
 function publishAlbum() {
@@ -82,7 +83,16 @@ function publishAlbum() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({'publish': true})
-    }).then((r)=> console.log('meh',r))
+    })
+    .then((r) => {
+        if (r.status === 204) {
+            document.getElementById("publishModalTitle").innerText = "Success"
+            document.getElementById("publishModalBody").className = "alert alert-success";
+            document.getElementById("publishModalBody").innerText = "album published successfully,reloading";
+            setTimeout(()=>window.location = window.location, 1200);
+        }
+    })
+
 
 }
 

@@ -210,3 +210,18 @@ def update_photo(user_id,album_name,photo_name):
                 photo.likes = 0
         db.session.commit()
         return jsonify({"likes": photo.likes})
+
+
+
+@album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['PUT',])
+def update_album(user_id, album_name):
+    json = request.get_json()
+    if current_user.is_authenticated and current_user.id == user_id:
+        if 'publish' in json:
+            user = User.query.get_or_404(user_id)
+            album = user.albums.filter_by(name=album_name).first_or_404()
+            album.public = True
+            db.session.commit()
+            return jsonify({"status": "success"}), 204
+    return '404' , 404
+
