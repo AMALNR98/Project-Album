@@ -63,6 +63,7 @@ class Photo(db.Model):
     uploaded_date = db.Column(db.String, default = func.now(), nullable = False)
     album_id = db.Column(db.Integer, db.ForeignKey("albums.id"), nullable = False)       
     public = db.Column(db.Boolean, default=False, nullable=False)
+    likes = db.Column(db.Integer, default=0)
     comments = db.relationship("Comment")
     __table_args__ = (db.UniqueConstraint('album_id', 'name', name='_album_id_name_uc'),)
 

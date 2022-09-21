@@ -42,11 +42,33 @@
   </div>
 </div>
 
+<div class="modal fade" id="publishModalCenter" tabindex="-1" role="dialog" aria-labelledby="publishModalCenter" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="modalTitle" class="modal-title" id="publishModalTitle">Warning</h5>
+        <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="publishModalBody" class="alert alert-warning" role="alert">
+           Warning: you are about to make this album public. 
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button id="publishAlbumButton" type="button" class="btn btn-primary">Publish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 {% block sidebar %}
 
     <ul class="list-group">
-        {% if current_user.is_authenticated %}
+        {% if current_user.is_authenticated and current_user.id == user.id %}
                 <div class="btn btn-group w-100" role="group" aria-label="Basic example">
                     <button id="deleteAlbumButton" title="delete album"  class="btn " type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModalCenter" class="btn btn-secondary"><i class="fa fa-trash"></i></button>
                     <button id="editDetailsButton" title="edit details" class="btn btn-default" type="button" data-mdb-toggle="modal" data-mdb-target="" class="btn btn-secondary"><i class="fa fa-edit"></i></button>
@@ -56,7 +78,7 @@
                     {% else %}
                     title="make public"
                     {% endif %}
-                     type="button" data-mdb-toggle="modal" data-mdb-target="" class="btn btn-secondary">
+                     type="button" data-mdb-toggle="modal" data-mdb-target="#publishModalCenter" class="btn btn-secondary">
                         <i class="fa fa-users"></i>
                     </button>
                 </div>

@@ -158,7 +158,7 @@ def view_photo(user_id,album_name,photo_name):
             return '404', 404
             
     else:
-        user = User.query.get(user_id)
+        user = User.query.get_or_404(user_id)
         album = user.albums.filter_by(name=album_name).first()
         if album:
             if album.public:
@@ -193,3 +193,20 @@ def delete_photo(user_id,album_name,photo_name):
             return "404",404
     else:
         return "404",404
+
+
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', methods=['PUT',])
+def update_photo(user_id,album_name,photo_name):
+    json = request.get_json()
+    if 'like' in json:
+        user = User.query.get_or_404(user_id)
+        album = user.albums.filter_by(name=album_name).first_or_404()
+        photo = album.photos.filter_by(name=photo_name).first_or_404()
+        if json['like']:
+            photo.likes += 1
+        else:
+            photo.likes -= 1
+            if photo.likes < 0:
+                photo.likes = 0
+        db.session.commit()
+        return jsonify({"likes": photo.likes})

@@ -48,7 +48,6 @@
   </div>
 </div>
 
-<script src="{{url_for('static', filename='js/script.js')}}"></script>
 
 {% endblock %}
 
@@ -75,10 +74,16 @@
       <i class="fa fa-edit"></i>
     </button>
   </div>
+  {% endif %}
   <li class="list-group-item">
     description : {{photo.description if photo.description else 'None'}}
   </li>
-  {% endif %}
+  <div class="btn btn-group w-100" role="group">
+      <button id="photoLikeButton" class="btn btn-default">
+        <i id="{{user.id ~ album_name ~ photo.name}}"  class="fa fa-heart heartIcon"> {{photo.likes}}</i>
+      </button>
+  </div>
+
 </ul>
 
 {% endblock %}
