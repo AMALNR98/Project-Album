@@ -96,6 +96,12 @@ function publishAlbum() {
 
 }
 
+function copyPublickLink(e) {
+    navigator.clipboard.writeText(document.location.href).then(()=> console.log('success'))
+}
+
+
+
 function main() {
     if (document.getElementById('deleteAlbumButton') != null ){
         document.getElementById('deleteAlbumButton').onclick = e => deleteAlbum(e);
@@ -123,6 +129,10 @@ function main() {
 
     if (document.getElementById('publishAlbumButton') != null ) {
         document.getElementById('publishAlbumButton').onclick = e => publishAlbum(e);
+    }
+
+    if (document.getElementById("copyLinkButton") != null) {
+        document.getElementById("copyLinkButton").onclick = e => copyPublickLink(e);
     }
 }
 

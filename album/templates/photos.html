@@ -99,6 +99,14 @@
             </tbody>
           </table>
         </li>
+  {% if album.public %}
+  <div class="btn btn-group w-100" role="group">
+      <button title="copy album link" class="btn btn-defualt w-100" type="button" id="copyLinkButton">
+        <i class="fa fa-copy"></i>
+      </button>
+  </div>
+  {% endif %}
+
         <script src="{{url_for('static', filename='js/script.js')}}"></script>
     </ul>
 </div>
