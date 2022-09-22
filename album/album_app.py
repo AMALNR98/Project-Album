@@ -124,13 +124,23 @@ def add_photo(user_id, album_name):
         )
         file_name = os.path.basename(file_path)
         size = 0
-        photo = Photo(
-            name=file_name,
-            size=size,
-            album_id=album.id,
-            description=request.form.get("description"),
-            public= True if request.form.get("status") == "public" else False
-        )
+        if album.public == True:
+            photo = Photo(
+                name=file_name,
+                size=size,
+                album_id=album.id,
+                description=request.form.get("description"),
+                public = True
+            )
+        else:
+            photo = Photo(
+                name=file_name,
+                size=size,
+                album_id=album.id,
+                description=request.form.get("description"),
+                public = False
+            )
+
         db.session.add(photo)
         db.session.commit()
         flash(f"{file_name} added successfully")
