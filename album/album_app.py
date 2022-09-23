@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, flash, request, redirect, url_for,
 from flask_login import current_user, login_required
 from flask_uploads import UploadSet, IMAGES
 
-from album.database import Album, Photo, db, User
+from album.database import Album, Photo, db, User, Comment
 from album.forms import AlbumForm, PhotoForm, CommentForm
 
 album_bp = Blueprint("album", "__name__")
@@ -225,3 +225,36 @@ def update_album(user_id, album_name):
             return jsonify({"status": "success"}), 204
     return '404' , 404
 
+
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>/comment', methods= ['POST',])
+def add_comment(user_id, album_name, photo_name):
+    json = request.get_json()
+    if current_user.is_authenticated: 
+        user = User.query.get_or_404(user_id)
+        album = user.albums.filter_by(name=album_name).first_or_404()
+        photo = album.photos.filter_by(name=photo_name).first_or_404()
+        comment = Comment(
+            display_name=f"{current_user.fname} {current_user.lname}",
+            photo_id=photo.id,
+            user_id=current_user.id,
+            comment=json['comment']
+        )
+        db.session.add(comment)
+        db.session.commit()
+        db.session.refresh(comment)
+        return jsonify(comment.as_dict())
+    else:
+        user = User.query.get_or_404(user_id)
+        album = user.albums.filter_by(name=album_name).first_or_404()
+        photo = album.photos.filter_by(name=photo_name).first_or_404()
+        comment = Comment(
+            display_name=f"anon",
+            photo_id=photo.id,
+            comment=json['comment']
+        )
+        db.session.add(comment)
+        db.session.commit()
+        db.session.refresh(comment)
+        return jsonify(comment.as_dict())
+
+    

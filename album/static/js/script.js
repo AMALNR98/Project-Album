@@ -97,9 +97,66 @@ function publishAlbum() {
 }
 
 function copyPublickLink(e) {
-    navigator.clipboard.writeText(document.location.href).then(()=> console.log('success'))
+    navigator.clipboard.writeText(document.location.href).then(()=> console.log('album link copied successfully'))
 }
 
+function addPostComment(e)  {
+    if (e.key == "Enter") {
+        let displayName = "sanju";
+        let commentText = "this is a comment";
+        let commentDate = "24-03-1998";
+        let commentCard = document.createElement("div");
+        commentCard.className = "card mb-3"
+        commentCard.innerHTML = `<div class="card-body">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="40"
+                height="40" />
+              <div class="w-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 id="displayName" class="text-primary fw-bold mb-0 displayName">
+                    <span id="commentText" class="commentText text-dark ms-2">comment</span>
+                  </h6>
+                  <p id="commentDate" class="mb-0 commentDate">date</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="small mb-0" style="color: #aaa;">
+                    <a href="#!" class="link-grey">Remove</a> •
+                    <a href="#!" class="link-grey">Reply</a> •
+                    <a href="#!" class="link-grey">Translate</a>
+                  </p>
+                  <div class="d-flex flex-row">
+                    <i class="fas fa-star text-warning me-2"></i>
+                    <i class="far fa-check-circle" style="color: #aaa;"></i>
+                  </div> </div>
+              </div>
+            </div>
+          </div>`
+        fetch(window.location.href + "/comment", {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+            body: JSON.stringify({'comment': document.getElementById("commentInput").value})}
+            )
+            .then( r => r.json())
+            .then( json => {
+
+                commentCard.getElementsByClassName('displayName')[0].innerText = json.display_name;
+                let commentSpan = document.createElement('span');
+                commentSpan.className = "text-dark ms-2";
+                commentSpan.innerText = json.comment;
+                commentCard.getElementsByClassName('displayName')[0].appendChild(commentSpan)
+                commentCard.getElementsByClassName('commentDate')[0].innerText = json.created_date;
+                document.getElementById('commentParent').appendChild(commentCard);
+
+
+            })
+
+        
+
+    }
+}
 
 
 function main() {
@@ -132,7 +189,12 @@ function main() {
     }
 
     if (document.getElementById("copyLinkButton") != null) {
+        
         document.getElementById("copyLinkButton").onclick = e => copyPublickLink(e);
+    }
+
+    if (document.getElementById("commentInput") !=  null){
+        document.getElementById("commentInput").addEventListener("keyup", (e)=> addPostComment(e))
     }
 }
 

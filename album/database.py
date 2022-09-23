@@ -64,7 +64,7 @@ class Photo(db.Model):
     album_id = db.Column(db.Integer, db.ForeignKey("albums.id"), nullable = False)       
     public = db.Column(db.Boolean, default=False, nullable=False)
     likes = db.Column(db.Integer, default=0)
-    comments = db.relationship("Comment")
+    comments = db.relationship("Comment", lazy='dynamic')
     __table_args__ = (db.UniqueConstraint('album_id', 'name', name='_album_id_name_uc'),)
 
     def __repr__(self) -> str:
@@ -75,11 +75,16 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key = True)
     display_name = db.Column(db.Integer, nullable = False)
-    photo_id = db.Column(db.Integer, db.ForeignKey("photos.id"), primary_key = True)
-    user_id = db.Column(db.Integer, primary_key = True)
+    created_date = db.Column(db.String, default = func.now(), nullable = False)
+    photo_id = db.Column(db.Integer, db.ForeignKey("photos.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     comment = db.Column(db.String, nullable = False)
 
     def __repr__(self) -> str:
         return f"Comment({self.name})"
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+ 
 
 

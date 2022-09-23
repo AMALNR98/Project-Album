@@ -1,3 +1,7 @@
+body {
+    background-color: #f7f6f6;
+}
+
 #sideBarCol {
     min-height: calc(100vh - 50px);
 } 

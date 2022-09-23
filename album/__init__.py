@@ -7,13 +7,14 @@ from flask_cors import CORS
 from .auth import auth_bp, login_manager
 from .album_app import album_bp, uploaded_images
 from .database import db
+from album import filters
 
 
 def create_app():
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../database.db"
     app.config["UPLOADED_PHOTOS_DEST"] = "album/static/users"
-
+    filters.add_filter(app)
     # app.config['SQLALCHEMY_ECHO'] = True
     app.secret_key = "dev"
     db.init_app(app)
