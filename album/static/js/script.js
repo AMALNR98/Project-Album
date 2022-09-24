@@ -98,6 +98,10 @@ function publishAlbum() {
 
 function copyPublickLink(e) {
     navigator.clipboard.writeText(document.location.href).then(()=> console.log('album link copied successfully'))
+    document.getElementById("tooltipSpan").innerText = "copied"
+    setTimeout(()=>{
+        document.getElementById("tooltipSpan").innerText = "copy"
+    }, 1000)
 }
 
 function addPostComment(e)  {
@@ -147,11 +151,11 @@ function addPostComment(e)  {
                 commentSpan.className = "text-dark ms-2";
                 commentSpan.innerText = json.comment;
                 commentCard.getElementsByClassName('displayName')[0].appendChild(commentSpan)
-                commentCard.getElementsByClassName('commentDate')[0].innerText = json.created_date;
-                document.getElementById('commentParent').appendChild(commentCard);
+                commentCard.getElementsByClassName('commentDate')[0].innerText = "now";
+                document.getElementById('commentParent').prepend(commentCard);
+                document.getElementById("commentInput").value = ""
 
-
-            })
+            }).catch(e => console.log(e))
 
         
 

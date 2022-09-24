@@ -1,7 +1,42 @@
 body {
-    background-color: #f7f6f6;
+    background-color: white;
 }
 
 #sideBarCol {
     min-height: calc(100vh - 50px);
+    background-color: #f7f6f6!important;
 } 
+
+.navbar {
+    background-color: #f7f6f6!important;
+}
+
+/* #content {
+    background-color: red!important;
+} */
+
+#copyLinkButton {
+    position: relative;
+}
+
+#content {
+    background-color: #f7f6f6!important;
+}
+
+#tooltipSpan {
+    display: none;
+}
+
+#copyLinkButton:hover span{
+    font-size: .60rem;
+    display: inline;
+    color: blue;
+    font-weight: bold;
+    border-radius: 20%;
+}
+
+.heartIcon {
+    color: gray ;
+}
+
+

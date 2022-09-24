@@ -70,10 +70,10 @@
     <ul class="list-group">
         {% if current_user.is_authenticated and current_user.id == user.id %}
                 <div class="btn btn-group w-100" role="group" aria-label="Basic example">
-                    <button id="deleteAlbumButton" title="delete album"  class="btn " type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModalCenter" class="btn btn-secondary"><i class="fa fa-trash"></i></button>
-                    <button id="editDetailsButton" title="edit details" class="btn btn-default" type="button" data-mdb-toggle="modal" data-mdb-target="" class="btn btn-secondary"><i class="fa fa-edit"></i></button>
+                    <button id="deleteAlbumButton" title="delete album"  class="btn btn-secondary" type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModalCenter" class="btn btn-secondary"><i class="fa fa-trash"></i></button>
+                    <button id="editDetailsButton" title="edit details" class="btn btn-secondary" type="button" data-mdb-toggle="modal" data-mdb-target="" class="btn btn-secondary"><i class="fa fa-edit"></i></button>
                     {% if not album.public %}
-                    <button id="editStatusButton" class="btn btn-default" 
+                    <button id="editStatusButton" class="btn btn-secondary" 
                     title="make public"
                      type="button" data-mdb-toggle="modal" data-mdb-target="#publishModalCenter" class="btn btn-secondary">
                         <i class="fa fa-upload"></i>
@@ -100,10 +100,21 @@
           </table>
         </li>
   {% if album.public %}
+
   <div class="btn btn-group w-100" role="group">
-      <button title="copy album link" class="btn btn-defualt w-100" type="button" id="copyLinkButton">
+      <button
+        title="copy album link"
+        data-toggle="tooltip"
+        class="btn btn-secondary w-100"
+        type="button" 
+        data-html="true"
+        id="copyLinkButton">
         <i class="fa fa-copy"></i>
+      <span id="tooltipSpan">copy</span>
       </button>
+
+      <!-- <div id="meh" style="position: absolute;"></div> -->
+      
   </div>
   {% endif %}
 

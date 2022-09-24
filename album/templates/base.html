@@ -18,6 +18,11 @@
   rel="stylesheet"
 />
 <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
+></script>
+
 </head>
 <body>
 
@@ -28,10 +33,10 @@
    {% endblock %}
    
   <div id="contentContainer" class="container-fluid mt-2">
-  <div  class="row">
+  <div  class="row gx-1">
     
-    <div  class="col shadow-sm p-3 mb-5 bg-white rounded">
-    <div class="container">
+    <div  id="content" class="col shadow-sm mb-5 bg-white rounded">
+    <div  class="container">
     
     {% block content %}
       {% block breadcrumb %}
@@ -42,7 +47,7 @@
     
     </div>
     </div>
-    <div id="sideBarCol" class="col-3 shadow-sm mb-5 bg-white rounded me-0">
+    <div id="sideBarCol" class="col-3 ms-2 shadow-sm mb-5 bg-white rounded me-0">
       {% block sidebar %}
       {% endblock %} 
     </div>
@@ -55,10 +60,7 @@
     <a class="text-reset fw-bold" href="/">Hamon Albums</a>
   </div>
 </div>
-<script
-  type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
-></script>
+
 <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
 </html>
