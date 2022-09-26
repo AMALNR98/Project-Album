@@ -196,6 +196,8 @@ def update_album(user_id, album_name):
             user = User.query.get_or_404(user_id)
             album = user.albums.filter_by(name=album_name).first_or_404()
             album.public = True
+            for photo in album.photos:
+                photo.public = True
             db.session.commit()
             return jsonify({"status": "success"}), 204
     else:
