@@ -6,9 +6,10 @@
         {% else %}
         {% set photo_path = 'logos/no-image.jpg' %}
         {% endif %}
-        <a href="{{url_for('album.view_album', user_id=user.id, album_name=album.name)}}"><img height="150px" class="card-img-top" src="{{url_for('static', filename=photo_path)}}" alt="Sample Title"></a>
+        <a href="{{url_for('album.view_album', user_id=user.slugified_id(), album_name=album.name)}}"><img height="150px" class="card-img-top" src="{{url_for('static', filename=photo_path)}}" alt="Sample Title"></a>
         <div class="card-body">
-          <p class="card-title lead"><a href="{{url_for('album.view_album', user_id=user.id, album_name=album.name)}}">{{album.name}}</a></p>
+          <p class="card-title lead"><a href="{{url_for('album.view_album',
+            user_id=user.slugified_id(), album_name=album.name)}}">{{album.name}}</a></p>
         </div>
       </div>
     </div>

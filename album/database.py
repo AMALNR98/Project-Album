@@ -33,6 +33,9 @@ class User(db.Model, UserMixin):
     def check_password(self, value):
         return check_password_hash(self._password, value)
 
+    def slugified_id(self):
+        return f'{self.fname}-{self.lname}-{self.id}'
+
     def __repr__(self) -> str:
         return f"User({self.fname} {self.lname})"
 
