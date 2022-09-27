@@ -21,7 +21,6 @@ def index():
         return render_template("home.html", user=current_user, albums=None, form=form)
 
        
-# @album_bp.route('/<int:user_id>/albums', methods=['POST',])
 @album_bp.route('/<string:user_id>/albums', methods=['POST',])
 @login_required
 def add_album(user_id):
@@ -46,7 +45,6 @@ def add_album(user_id):
 
 
 @album_bp.route(
-    # "/<int:user_id>/albums",
     "/<string:user_id>/albums",
     methods=[
         "GET",
@@ -73,7 +71,6 @@ def view_albums(user_id):
         )
 
 
-# @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['DELETE',])
 @album_bp.route('/<string:user_id>/albums/<string:album_name>', methods=['DELETE',])
 @login_required
 def delete_album(user_id,album_name):
@@ -87,7 +84,7 @@ def delete_album(user_id,album_name):
     else :
         return current_app.login_manager.unauthorized() 
 
-# @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['GET' ])
+
 @album_bp.route('/<string:user_id>/albums/<string:album_name>', methods=['GET' ])
 def view_album(user_id,album_name):
     user_id = parse_id_from_slug(user_id)
@@ -109,7 +106,6 @@ def view_album(user_id,album_name):
             return current_app.login_manager.unauthorized()
         
 
-# @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['POST'])
 @album_bp.route('/<string:user_id>/albums/<string:album_name>', methods=['POST'])
 @login_required
 def add_photo(user_id, album_name):
@@ -145,7 +141,6 @@ def add_photo(user_id, album_name):
     )
 
     
-# @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>')
 @album_bp.route('/<string:user_id>/albums/<string:album_name>/<string:photo_name>')
 def view_photo(user_id,album_name,photo_name):
     user_id = parse_id_from_slug(user_id)
@@ -183,7 +178,6 @@ def delete_photo(user_id,album_name,photo_name):
         return current_app.login_manager.unauthorized()
 
 
-# @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', methods=['PUT',])
 @album_bp.route('/<string:user_id>/albums/<string:album_name>/<string:photo_name>', methods=['PUT',])
 def update_photo(user_id,album_name,photo_name):
     user_id = parse_id_from_slug(user_id)
@@ -204,7 +198,6 @@ def update_photo(user_id,album_name,photo_name):
         return current_app.login_manager.unauthorized()
 
 
-# @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['PUT',])
 @album_bp.route('/<string:user_id>/albums/<string:album_name>', methods=['PUT',])
 def update_album(user_id, album_name):
     user_id = parse_id_from_slug(user_id)
@@ -222,7 +215,6 @@ def update_album(user_id, album_name):
         return current_app.login_manager.unauthorized()
 
 
-# @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>/comment', methods= ['POST',])
 @album_bp.route('/<string:user_id>/albums/<string:album_name>/<string:photo_name>/comment', methods= ['POST',])
 def add_comment(user_id, album_name, photo_name):
     user_id = parse_id_from_slug(user_id)
