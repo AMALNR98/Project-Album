@@ -1,3 +1,4 @@
+
 from wtforms import (
     BooleanField,
     StringField,
@@ -69,3 +70,16 @@ class AlbumForm(FlaskForm):
 class CommentForm(FlaskForm):
     display_name = StringField("name",[Length(min = 1, max =50), DataRequired()])
     comment = TextAreaField("description", [Length(min=0, max=50)])
+
+class ProfileForm(FlaskForm):
+    fname = StringField(
+        [
+            Length(
+                min=4,
+                max=25,
+            ),
+            DataRequired("field required"),
+        ]
+    )
+    lname = StringField([Length(min=0, max=25), DataRequired()])
+    bio = StringField([Length(min=0, max=100)])
