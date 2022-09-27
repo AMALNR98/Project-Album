@@ -239,6 +239,6 @@ def add_comment(user_id, album_name, photo_name):
 @album_bp.route('/users', methods= ['GET',])
 @login_required
 def get_public_users():
-    users = User.query.filter_by(public=True).all()
-    print(users)
+    query = request.args.get('q')
+    users = User.query.filter(User.fname.like(f'%{query}%'), User.public==True).all()
     return jsonify(dict(users=[dict(name=f"{user.fname} {user.lname}", url=url_for('album.view_albums', user_id=user.id)) for user in users]))

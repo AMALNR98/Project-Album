@@ -23,8 +23,26 @@
       <h1>
         <a style="color: grey;" class="navbar-brand mt-2 mt-lg-0" href="{{url_for('album.index')}}">Hamon Albums</a>
       </h1>
+
+      <form id="searchForm" class="d-flex input-group">
+        <div class="position-relative">
+        <input
+        id="searchBar"
+        type="search"
+        class="form-control rounded"
+        placeholder="Search"
+        autocomplete="off"
+        />
+        <ul
+        style="display: none;"
+        id="searchList"
+        class="position-absolute w-100 list-group"
+        ></ul>
+        </div>
+      </form>
     </div>
     {% if current_user.is_authenticated %}
+    
     <div class="d-flex mb-2 align-items-center">
       <div class="dropdown">
         <a
@@ -60,3 +78,4 @@
     {% endif %}
   </div>
 </nav>
+

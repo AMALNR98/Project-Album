@@ -162,6 +162,31 @@ function addPostComment(e)  {
     }
 }
 
+function showSuggestion(e) {
+    document.getElementById('searchList').style.display = "none"
+    let value = e.target.value
+    if (value.length > 1) {
+        fetch(`/users?q=${value}`, {method: 'get'})
+        .then(r => r.json())
+        .then(data => {
+            addListItem(data.users)
+            document.getElementById('searchList').style.display = "block" 
+        })
+    }
+    else {
+          document.getElementById('searchList').style.display = "none"
+    }
+
+}
+
+function addListItem(list) {
+    let searchList = document.getElementById('searchList')
+    let innerHtml = ""
+    list.forEach(user => innerHtml = innerHtml + `<li class="list-group-item"><a href="${user.url}">${user.name}</a></li>`) 
+    searchList.innerHTML = innerHtml
+
+}
+
 
 function main() {
     if (document.getElementById('deleteAlbumButton') != null ){
@@ -200,6 +225,12 @@ function main() {
     if (document.getElementById("commentInput") !=  null){
         document.getElementById("commentInput").addEventListener("keyup", (e)=> addPostComment(e))
     }
+
+    if (document.getElementById("searchBar") != null){
+        document.getElementById("searchBar").oninput = e => showSuggestion(e)
+        document.getElementById("searchForm").onmouseleave = e => document.getElementById('searchList').style.display = "none"
+    }
+
 }
 
 main()

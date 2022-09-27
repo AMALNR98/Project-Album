@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable = False, unique = True)
     dob = db.Column(db.String, nullable = False)
     _password = db.Column(db.String, nullable = False)
+    public = db.Column(db.Boolean, default=False)
     albums = db.relationship("Album", lazy ="dynamic")
     
 
@@ -32,6 +33,11 @@ class User(db.Model, UserMixin):
 
     def check_password(self, value):
         return check_password_hash(self._password, value)
+
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
     def __repr__(self) -> str:
         return f"User({self.fname} {self.lname})"
