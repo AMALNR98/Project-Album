@@ -11,7 +11,7 @@ from wtforms import (
 )
 from wtforms.validators import Email, Length, DataRequired, EqualTo
 from flask_wtf.file import FileRequired, FileAllowed
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm,Form
 
 
 class RegistrationForm(FlaskForm):
@@ -71,7 +71,7 @@ class CommentForm(FlaskForm):
     display_name = StringField("name",[Length(min = 1, max =50), DataRequired()])
     comment = TextAreaField("description", [Length(min=0, max=50)])
 
-class ProfileForm(FlaskForm):
+class ProfileForm(Form):
     fname = StringField(
         [
             Length(
@@ -82,4 +82,15 @@ class ProfileForm(FlaskForm):
         ]
     )
     lname = StringField([Length(min=0, max=25), DataRequired()])
-    bio = StringField([Length(min=0, max=100)])
+    bio = TextAreaField([Length(min=0, max=100)])
+    # profilephoto = FileField(
+    #     validators=[
+    #         FileRequired(),
+    #         FileAllowed(
+    #             ["png", "jpeg", "jpg"],
+    #         ),
+    #     ]
+    # )
+    email = StringField(
+        [Length(min=6, max=120), DataRequired("feild required"), Email("invalid email")]
+    )
