@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     dob = db.Column(db.String, nullable = False)
     _password = db.Column(db.String, nullable = False)
     albums = db.relationship("Album", lazy ="dynamic")
+    bio = db.Column(db.String, nullable = True)
     
 
 
