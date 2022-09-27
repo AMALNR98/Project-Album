@@ -4,7 +4,7 @@ from flask_login import current_user, login_required, login_manager
 from flask_uploads import UploadSet, IMAGES
 
 from album.database import Album, Photo, db, User, Comment
-from album.forms import AlbumForm, PhotoForm, CommentForm
+from album.forms import AlbumForm, PhotoForm, CommentForm, ProfileForm
 
 album_bp = Blueprint("album", "__name__")
 uploaded_images = UploadSet("photos", IMAGES)
@@ -234,3 +234,25 @@ def add_comment(user_id, album_name, photo_name):
         db.session.commit()
         db.session.refresh(comment)
         return jsonify(comment.as_dict())
+
+
+@album_bp.route('/<int:user_id>/settings', methods=['GET','POST'])
+@login_required
+def update_profile(user_id):
+    if current_user.is_authenticated and current_user.id == user_id:
+        print(user_id)
+        form = ProfileForm(request.form)
+
+        # user = User.query.get(current_user).first()
+        
+        if request.method == "POST" and form.validate():  
+            current_user.fname = form.fname.data
+            current_user.lname = form.lname.data
+            current_user.bio = form.bio.data
+            db.session.commit()
+            print("user updated successfully")
+        print(form.errors)
+        return render_template('settings.html', user_id=user_id, form=form)
+        
+    else:
+        return current_app.login_manager.unauthorized()
