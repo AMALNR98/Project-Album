@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form>
+    <!-- FirstName input -->
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-xl-9">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">First Name</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                    <input type="text" class="form-control form-control-lg" placeholder="{{current_user.fname}}"/>
+                  </div>
+                </div>
+               </div>
+            </div>  
+           </div>  
+        </div> 
+    </div>
+    <!-- LastName input -->
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-xl-9">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body">
+                <div class="row align-items-center ">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">Last Name</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                    <input type="text" class="form-control form-control-lg" placeholder="{{current_user.lname}}" />
+                  </div>
+                </div>
+               </div>
+            </div>  
+           </div>  
+        </div> 
+    </div>
+
+
+    <!-- Email input -->
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-xl-9">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body">
+                <div class="row align-items-center ">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">Email</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                    <input type="text" class="form-control form-control-lg" placeholder="{{current_user.email}}"/>
+                  </div>
+                </div>
+               </div>
+            </div>  
+           </div>  
+        </div> 
+    </div>
+  
+    <!-- Bio input -->
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-xl-9">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body">
+                <div class="row align-items-center ">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">Bio</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                    <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+                    
+                  </div>
+                      
+                </div>
+                 <!-- Submit button -->
+                 <div id= "updatebtn" class="float-end mt-3 pe-4"><button type="button" class="btn btn-primary">Update</button>
+                 </div>
+        </form>
+               </div>
+            </div>  
+           </div>  
+        </div> 
+     
+    </div>
+
+{% endblock %}
