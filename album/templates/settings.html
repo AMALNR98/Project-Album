@@ -53,7 +53,7 @@
                     <h6 class="mb-0">Email</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <input type="text" class="form-control form-control-lg" placeholder="{{current_user.email}}"/>
+                    <input type="text" disabled class="form-control form-control-lg" placeholder="{{current_user.email}}"/>
                   </div>
                 </div>
                </div>
@@ -90,3 +90,22 @@
     </div>
 
 {% endblock %}
+
+
+{% block sidebar %}
+        <div class="card testimonial-card">
+          <div class="card-up" style="background-color: #9D789B;"></div>
+          <div class="avatar mx-auto bg-white">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp"
+              class="rounded-circle img-fluid" />
+          </div>
+          <div class="card-body">
+            <h4 class="mb-4">{{current_user.fname+" "+current_user.lname}}</h4>
+            <hr />
+            <p class="dark-grey-text mt-4">
+              <i class="fas fa-quote-left pe-2"></i>Lorem ipsum dolor sit amet eos adipisci,
+              consectetur adipisicing elit.
+            </p>
+          </div>
+        </div>
+{% endblock%}
