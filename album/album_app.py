@@ -234,3 +234,11 @@ def add_comment(user_id, album_name, photo_name):
         db.session.commit()
         db.session.refresh(comment)
         return jsonify(comment.as_dict())
+
+
+@album_bp.route('/users', methods= ['GET',])
+@login_required
+def get_public_users():
+    users = User.query.filter_by(public=True).all()
+    print(users)
+    return jsonify(dict(users=[dict(name=f"{user.fname} {user.lname}", url=url_for('album.view_albums', user_id=user.id)) for user in users]))
