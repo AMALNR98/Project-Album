@@ -38,5 +38,15 @@ body {
 .heartIcon {
     color: gray ;
 }
+/*  */
+.pe-4, #updatebtn {
+    padding-right: 2.3rem !important;
+  }
 
-
+  .form-check, #public_checkbox {
+    display: block;
+    min-height: 1.6rem;
+    padding-left: 3.7em;
+    margin-bottom: 0.125rem;
+    padding-top: inherit;
+  }
