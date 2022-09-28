@@ -1,9 +1,12 @@
 import os
+import datetime
+
 from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify, current_app
 from flask_login import current_user, login_required, login_manager
 from flask_uploads import UploadSet, IMAGES
+from sqlalchemy import func
 
-from album.database import Album, Photo, db, User, Comment
+from album.database import Album, Photo, db, User, Comment, Notification
 from album.forms import AlbumForm, PhotoForm, CommentForm
 
 album_bp = Blueprint("album", "__name__")
@@ -182,6 +185,7 @@ def update_photo(user_id,album_name,photo_name):
             photo.likes -= 1
             if photo.likes < 0:
                 photo.likes = 0
+        user.add_notification(notification_type='like', type_id=photo.id, who_id=current_user.id)
         db.session.commit()
         return jsonify({"likes": photo.likes})
     else:
@@ -218,6 +222,7 @@ def add_comment(user_id, album_name, photo_name):
             comment=json['comment']
         )
         db.session.add(comment)
+        user.add_notification(notification_type='comment', type_id=comment.id, who_id=current_user.id)
         db.session.commit()
         db.session.refresh(comment)
         return jsonify(comment.as_dict())
@@ -242,3 +247,15 @@ def get_public_users():
     query = request.args.get('q')
     users = User.query.filter(User.fname.like(f'%{query}%'), User.public==True).all()
     return jsonify(dict(users=[dict(name=f"{user.fname} {user.lname}", url=url_for('album.view_albums', user_id=user.id)) for user in users]))
+
+
+@album_bp.route('/notifications', methods= ['GET',])
+@login_required
+def get_notifications():
+    notifications = current_user.notifications.filter(Notification.timestamp > current_user.notification_last_read).all()
+    print([notification.timestamp for notification in current_user.notifications])
+    current_user.notification_last_read = datetime.datetime.now()
+    print(current_user.notification_last_read)
+    db.session.commit()
+    return jsonify([notification.as_dict() for notification in notifications])
+

@@ -1,3 +1,6 @@
+import datetime
+import json
+
 from sqlalchemy import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask_sqlalchemy import SQLAlchemy
@@ -18,8 +21,9 @@ class User(db.Model, UserMixin):
     dob = db.Column(db.String, nullable = False)
     _password = db.Column(db.String, nullable = False)
     public = db.Column(db.Boolean, default=False)
-    albums = db.relationship("Album", lazy ="dynamic")
-    
+    notification_last_read = db.Column(db.String, nullable=True, default=datetime.datetime.now())
+    albums = db.relationship("Album", lazy="dynamic")
+    notifications = db.relationship("Notification", lazy='dynamic')
 
 
     @hybrid_property
@@ -33,6 +37,18 @@ class User(db.Model, UserMixin):
 
     def check_password(self, value):
         return check_password_hash(self._password, value)
+
+    def add_notification(self, notification_type, type_id, who_id):
+        details = {'type': notification_type, 'type_id': type_id, 'who': who_id}
+        if notification_type == 'like':
+            details = {'type': 'like', 'type_id': type_id, 'who': who_id}
+        else:
+            details = {'type': 'comment', 'type_id': type_id, 'who': who_id}
+        notification = Notification(user_id=self.id, timestamp=datetime.datetime.now(), details=json.dumps(details))
+        db.session.add(notification)
+        db.session.commit()
+
+        
 
 
     def as_dict(self):
@@ -81,7 +97,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key = True)
     display_name = db.Column(db.Integer, nullable = False)
-    created_date = db.Column(db.String, default = func.now(), nullable = False)
+    created_date = db.Column(db.String, default=func.now(), nullable = False)
     photo_id = db.Column(db.Integer, db.ForeignKey("photos.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     comment = db.Column(db.String, nullable = False)
@@ -91,6 +107,17 @@ class Comment(db.Model):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
- 
+
+
+class Notification(db.Model):
+    __table__name = "notifications"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    timestamp = db.Column(db.String, default=datetime.datetime.now())
+    details = db.Column(db.Text)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 

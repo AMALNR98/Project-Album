@@ -15,7 +15,6 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../database.db"
     app.config["UPLOADED_PHOTOS_DEST"] = "album/static/users"
     filters.add_filter(app)
-    # app.config['SQLALCHEMY_ECHO'] = True
     app.secret_key = "dev"
     db.init_app(app)
     login_manager.init_app(app)

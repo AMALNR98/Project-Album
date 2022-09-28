@@ -44,6 +44,33 @@
     {% if current_user.is_authenticated %}
     
     <div class="d-flex mb-2 align-items-center">
+        <div class="dropdown">
+        <a
+          class="link-secondary me-3 dropdown-toggle hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-mdb-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fas fa-bell"></i>
+          <span id="notificationCount" class="badge rounded-pill badge-notification bg-danger">1</span>
+        </a>
+        <ul id="notificationList"
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuLink"
+        >
+          <li>
+            <a class="dropdown-item" href="#">Some news</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Another news</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </li>
+        </ul>
+      </div>
       <div class="dropdown">
         <a
           class="dropdown-toggle d-flex align-items-center hidden-arrow"
