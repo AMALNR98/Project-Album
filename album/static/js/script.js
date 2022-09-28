@@ -187,6 +187,29 @@ function addListItem(list) {
 
 }
 
+function fetchNotifications() {
+    fetch('/notifications')
+        .then(r => r.json())
+        .then(data => {
+            console.log(data)
+            if (data.length > 0) {
+                let notificationList = document.getElementById("notificationList")
+                data.forEach(notificationItem => {
+                    let listItem = document.createElement('li')
+                    let a = document.createElement('a')
+                    a.href = notificationItem.photo_url
+                    a.className = "dropdown-item"
+                    a.innerText = notificationItem.notification
+                    listItem.appendChild(a)
+                    notificationList.prepend(listItem)
+                    let notificationCount = document.getElementById('notificationCount')
+                    notificationCount.innerText = (Number.parseInt(notificationCount.innerText) + 1).toString()
+                })
+            }
+        })
+    setTimeout(fetchNotifications, 5000)
+}
+
 
 function main() {
     if (document.getElementById('deleteAlbumButton') != null ){
@@ -229,6 +252,10 @@ function main() {
     if (document.getElementById("searchBar") != null){
         document.getElementById("searchBar").oninput = e => showSuggestion(e)
         document.getElementById("searchForm").onmouseleave = e => document.getElementById('searchList').style.display = "none"
+    }
+
+    if (document.getElementById("notificationList") != null) {
+        fetchNotifications()
     }
 
 

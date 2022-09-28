@@ -223,9 +223,9 @@ def add_comment(user_id, album_name, photo_name):
             comment=json['comment']
         )
         db.session.add(comment)
-        user.add_notification(notification_type='comment', type_id=comment.id, who_id=current_user.id)
         db.session.commit()
         db.session.refresh(comment)
+        user.add_notification(notification_type='comment', type_id=comment.id, who_id=current_user.id)
         return jsonify(comment.as_dict())
     else:
         user = User.query.get_or_404(user_id)
@@ -250,7 +250,7 @@ def get_public_users():
     return jsonify(dict(users=[dict(name=f"{user.fname} {user.lname}", url=url_for('album.view_albums', user_id=user.id)) for user in users]))
 
 
-@album_bp.route('/notifications', methods= ['GET',])
+@album_bp.route('/notifications', methods=['GET', ])
 @login_required
 def get_notifications():
     notifications = current_user.notifications.filter(Notification.timestamp > current_user.notification_last_read).all()
