@@ -8,6 +8,7 @@ from sqlalchemy import func
 
 from album.database import Album, Photo, db, User, Comment, Notification
 from album.forms import AlbumForm, PhotoForm, CommentForm
+from album import helpers
 
 album_bp = Blueprint("album", "__name__")
 uploaded_images = UploadSet("photos", IMAGES)
@@ -138,21 +139,21 @@ def add_photo(user_id, album_name):
 
     
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>')
-def view_photo(user_id,album_name,photo_name):
+def view_photo(user_id, album_name, photo_name):
     photo = None
     if current_user.is_authenticated and current_user.id == user_id :
         album = current_user.albums.filter_by(name=album_name).first_or_404()
         photo = album.photos.filter_by(name = photo_name, album_id=album.id).first_or_404()
-        path = 'users/'  + str(current_user.id) + '/' + str(album.name) 
+        path = 'users/' + str(current_user.id) + '/' + str(album.name)
         return render_template('photo.html',photo = photo, current_user=current_user, user = current_user, path = path, album_name=album_name)
     else:
         user = User.query.get_or_404(user_id)
         album = user.albums.filter_by(name=album_name).first_or_404()
         if album.public:
-            photo = Photo.query.filter_by(name = photo_name, album_id=album.id).first_or_404()
+            photo = Photo.query.filter_by(name=photo_name, album_id=album.id).first_or_404()
             if photo.public:
                 path = 'users/'  + str(user.id) + '/' + str(album.name) 
-                return render_template('photo.html',photo = photo, current_user=current_user, user=user, path=path, description = photo.description, album_name=album_name)
+                return render_template('photo.html', photo=photo, current_user=current_user, user=user, path=path, description = photo.description, album_name=album_name)
             else:
                 return current_app.login_manager.unauthorized()
         else: 
@@ -257,5 +258,5 @@ def get_notifications():
     current_user.notification_last_read = datetime.datetime.now()
     print(current_user.notification_last_read)
     db.session.commit()
-    return jsonify([notification.as_dict() for notification in notifications])
+    return jsonify([helpers.format_notification(notification, current_user) for notification in notifications])
 
