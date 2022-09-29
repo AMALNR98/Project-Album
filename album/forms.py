@@ -83,14 +83,14 @@ class ProfileForm(Form):
     )
     lname = StringField([Length(min=0, max=25), DataRequired()])
     bio = TextAreaField([Length(min=0, max=100)])
-    # profilephoto = FileField(
-    #     validators=[
-    #         FileRequired(),
-    #         FileAllowed(
-    #             ["png", "jpeg", "jpg"],
-    #         ),
-    #     ]
-    # )
+    photo = FileField(
+        validators=[
+            
+            FileAllowed(
+                ["png", "jpeg", "jpg"],
+            ),
+        ]
+    )
     email = StringField(
         [Length(min=6, max=120), DataRequired("feild required"), Email("invalid email")]
     )
