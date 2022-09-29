@@ -1,3 +1,4 @@
+from email.policy import default
 import os
 from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify, current_app
 from flask_login import current_user, login_required, login_manager
@@ -110,7 +111,7 @@ def add_photo(user_id, album_name):
     file_name = os.path.basename(file_path)
     size = 0
     if album.public == True:
-        photo = Photo(
+        photo = Photo( 
             name=file_name,
             size=size,
             album_id=album.id,
@@ -236,23 +237,68 @@ def add_comment(user_id, album_name, photo_name):
         return jsonify(comment.as_dict())
 
 
-@album_bp.route('/<int:user_id>/settings', methods=['GET','POST'])
+@album_bp.route('/settings', methods=['POST'])
 @login_required
-def update_profile(user_id):
-    if current_user.is_authenticated and current_user.id == user_id:
-        print(user_id)
+def update_profile():
+    if current_user.is_authenticated:
         form = ProfileForm(request.form)
-
-        # user = User.query.get(current_user).first()
-        
-        if request.method == "POST" and form.validate():  
+        print(form)
+        if form.validate():  
+            path_ex=os.path.exists(f"album/static/users/{current_user.id}/profileavtar.jpg")
+            path_join=os.path.join(f"album/static/users/{current_user.id}","profileavtar.jpg")
+            # print(path_join,"///////////////")
+            if path_ex:
+                profile_pic_path=path_join
+                os.remove(profile_pic_path)
+                file_path = uploaded_images.save(
+                request.files["photo"], f"{current_user.id}",
+                name="profileavtar.jpg"
+                )
+                photo_name = os.path.basename('users/'+file_path)
+                print(photo_name)
+                print(file_path)
+            else:
+                if "photo" in request.files:
+                    print(",,./,/.,./,/,./,/")
+                file_path = uploaded_images.save(
+                request.files["photo"], f"{current_user.id}",
+                name="profileavtar.jpg"
+                )
+                photo_name = os.path.basename('users/'+file_path)
+                # print(photo_name)
+                # print(file_path)
+            # print(profile_pic_path)
             current_user.fname = form.fname.data
             current_user.lname = form.lname.data
             current_user.bio = form.bio.data
             db.session.commit()
             print("user updated successfully")
-        print(form.errors)
-        return render_template('settings.html', user_id=user_id, form=form)
-        
+            return redirect('settings' )
+        else:
+            
+            print(form.errors)
+            return redirect('settings' )
     else:
         return current_app.login_manager.unauthorized()
+
+@album_bp.route('/settings', methods=['GET'])
+@login_required
+def get_settings():
+    form = ProfileForm(request.form)
+    # print(url_for("static",filename=f"users/{current_user.id}/profileavtar.jpg"))
+    c_path=os.getcwd()
+    print(c_path)
+    path_join=os.path.join(f"album/static/users/{current_user.id}","profileavtar.jpg")
+    path_ex=os.path.exists(f"album/static/users/{current_user.id}/profileavtar.jpg")
+    # print(path_ex,"path_ex")
+    # print(path_join,"path_join")
+    if path_ex:
+        
+        # print("======",path_ex)
+        profile_pic_path=(url_for("static",filename=f"users/{current_user.id}/profileavtar.jpg"))
+        return render_template('settings.html',form = form,profile_pic_path=profile_pic_path)
+    else:
+        c_path=os.getcwd()
+        # print(c_path,"pppppppppp")
+        profile_pic_path = "static/logos/profileavatar.jpg"
+        return render_template('settings.html',form = form, profile_pic_path=profile_pic_path)
