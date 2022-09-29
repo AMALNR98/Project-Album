@@ -4,6 +4,7 @@ from flask import url_for
 
 from album.database import User, Album, Comment, Photo
 
+
 def format_notification(notification, current_user):
     details = json.loads(notification.details)
     if details['type'] == 'like':
@@ -12,7 +13,7 @@ def format_notification(notification, current_user):
         album = Album.query.get(photo.album_id)
         photo_url = url_for('album.view_photo', user_id=current_user.id, album_name=album.name, photo_name=photo.name)
         return dict(
-            notification=f"{notified_user.fname} {notified_user.lname} liked your photo",
+            notification=f"{notified_user.fname} {notified_user.lname} reacted to your photo",
             photo_url=photo_url,
         )
 

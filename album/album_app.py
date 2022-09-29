@@ -4,7 +4,6 @@ import datetime
 from flask import Blueprint, render_template, flash, request, redirect, url_for, jsonify, current_app
 from flask_login import current_user, login_required, login_manager
 from flask_uploads import UploadSet, IMAGES
-from sqlalchemy import func
 
 from album.database import Album, Photo, db, User, Comment, Notification
 from album.forms import AlbumForm, PhotoForm, CommentForm
@@ -45,7 +44,6 @@ def add_album(user_id):
     return redirect(url_for("album.index"))
 
 
-
 @album_bp.route(
     "/<int:user_id>/albums",
     methods=[
@@ -72,17 +70,18 @@ def view_albums(user_id):
         )
 
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['DELETE',])
+@album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['DELETE', ])
 @login_required
-def delete_album(user_id,album_name):
+def delete_album(user_id, album_name):
     if current_user.id == user_id:
         album = current_user.albums.filter_by(name=album_name).first()
         db.session.delete(album)
         db.session.commit()
         return '', 204
 
-    else :
+    else:
         return current_app.login_manager.unauthorized() 
+
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>', methods=['GET' ])
 def view_album(user_id,album_name):
@@ -113,7 +112,7 @@ def add_photo(user_id, album_name):
     )
     file_name = os.path.basename(file_path)
     size = 0
-    if album.public == True:
+    if album.public:
         photo = Photo(
             name=file_name,
             size=size,
@@ -127,7 +126,7 @@ def add_photo(user_id, album_name):
             size=size,
             album_id=album.id,
             description=request.form.get("description"),
-            public = False
+            public=False
         )
 
     db.session.add(photo)
@@ -143,9 +142,9 @@ def view_photo(user_id, album_name, photo_name):
     photo = None
     if current_user.is_authenticated and current_user.id == user_id :
         album = current_user.albums.filter_by(name=album_name).first_or_404()
-        photo = album.photos.filter_by(name = photo_name, album_id=album.id).first_or_404()
+        photo = album.photos.filter_by(name=photo_name, album_id=album.id).first_or_404()
         path = 'users/' + str(current_user.id) + '/' + str(album.name)
-        return render_template('photo.html',photo = photo, current_user=current_user, user = current_user, path = path, album_name=album_name)
+        return render_template('photo.html', photo=photo, current_user=current_user, user=current_user, path=path, album_name=album_name)
     else:
         user = User.query.get_or_404(user_id)
         album = user.albums.filter_by(name=album_name).first_or_404()
@@ -162,10 +161,10 @@ def view_photo(user_id, album_name, photo_name):
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', methods=['DELETE',])
 @login_required
-def delete_photo(user_id,album_name,photo_name):
+def delete_photo(user_id, album_name, photo_name):
     if current_user.id == user_id:
         album = current_user.albums.filter_by(name=album_name).first_or_404()
-        photo = album.photos.filter_by(name = photo_name).first()
+        photo = album.photos.filter_by(name=photo_name).first()
         db.session.delete(photo)
         db.session.commit()
         return jsonify({'status': 'deleted successfully'}), 204
@@ -174,7 +173,7 @@ def delete_photo(user_id,album_name,photo_name):
 
 
 @album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>', methods=['PUT',])
-def update_photo(user_id,album_name,photo_name):
+def update_photo(user_id, album_name, photo_name):
     json = request.get_json()
     if 'like' in json:
         user = User.query.get_or_404(user_id)
@@ -209,7 +208,7 @@ def update_album(user_id, album_name):
         return current_app.login_manager.unauthorized()
 
 
-@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>/comment', methods= ['POST',])
+@album_bp.route('/<int:user_id>/albums/<string:album_name>/<string:photo_name>/comment', methods=['POST', ])
 def add_comment(user_id, album_name, photo_name):
     json = request.get_json()
     if current_user.is_authenticated: 
@@ -242,7 +241,7 @@ def add_comment(user_id, album_name, photo_name):
         return jsonify(comment.as_dict())
 
 
-@album_bp.route('/users', methods= ['GET',])
+@album_bp.route('/users', methods=['GET', ])
 @login_required
 def get_public_users():
     query = request.args.get('q')
@@ -254,9 +253,7 @@ def get_public_users():
 @login_required
 def get_notifications():
     notifications = current_user.notifications.filter(Notification.timestamp > current_user.notification_last_read).all()
-    print([notification.timestamp for notification in current_user.notifications])
     current_user.notification_last_read = datetime.datetime.now()
-    print(current_user.notification_last_read)
     db.session.commit()
     return jsonify([helpers.format_notification(notification, current_user) for notification in notifications])
 
