@@ -240,65 +240,53 @@ def add_comment(user_id, album_name, photo_name):
 @album_bp.route('/settings', methods=['POST'])
 @login_required
 def update_profile():
-    if current_user.is_authenticated:
-        form = ProfileForm(request.form)
-        print(form)
-        if form.validate():  
-            path_ex=os.path.exists(f"album/static/users/{current_user.id}/profileavtar.jpg")
-            path_join=os.path.join(f"album/static/users/{current_user.id}","profileavtar.jpg")
-            # print(path_join,"///////////////")
-            if path_ex:
-                profile_pic_path=path_join
-                os.remove(profile_pic_path)
-                file_path = uploaded_images.save(
-                request.files["photo"], f"{current_user.id}",
-                name="profileavtar.jpg"
-                )
-                photo_name = os.path.basename('users/'+file_path)
-                print(photo_name)
-                print(file_path)
-            else:
-                if "photo" in request.files:
-                    print(",,./,/.,./,/,./,/")
-                file_path = uploaded_images.save(
-                request.files["photo"], f"{current_user.id}",
-                name="profileavtar.jpg"
-                )
-                photo_name = os.path.basename('users/'+file_path)
-                # print(photo_name)
-                # print(file_path)
-            # print(profile_pic_path)
-            current_user.fname = form.fname.data
-            current_user.lname = form.lname.data
-            current_user.bio = form.bio.data
-            db.session.commit()
-            print("user updated successfully")
-            return redirect('settings' )
+    
+    form = ProfileForm(request.form)
+    path_ex=os.path.exists(f"album/static/users/{current_user.id}/profileavtar.jpg")
+    path_join=os.path.join(f"album/static/users/{current_user.id}","profileavtar.jpg")
+    print(form)
+    print(form.validate,"===form.validate")
+    if form.validate():  
+        current_user.fname = form.fname.data
+        current_user.lname = form.lname.data
+        current_user.bio = form.bio.data
+        db.session.commit()
+        print("user updated successfully")
+        
+        if request.files['photo'].filename == "":
+            profile_pic_path = "static/logos/profileavatar.jpg"
+            return redirect(url_for('album.get_settings'))
+        elif path_ex:
+            profile_pic_path=path_join
+            os.remove(profile_pic_path)
+            file_path = uploaded_images.save(
+            request.files["photo"], f"{current_user.id}",
+            name="profileavtar.jpg"
+            )
+            photo_name = os.path.basename('users/'+file_path)
+            return redirect(url_for('album.get_settings'))
         else:
-            
-            print(form.errors)
-            return redirect('settings' )
-    else:
-        return current_app.login_manager.unauthorized()
+            print("something here")
+            file_path = uploaded_images.save(
+            request.files["photo"], f"{current_user.id}",
+            name="profileavtar.jpg"
+            )
+            photo_name = os.path.basename('users/'+file_path)
+            return redirect(url_for('album.get_settings'))
+
 
 @album_bp.route('/settings', methods=['GET'])
 @login_required
 def get_settings():
     form = ProfileForm(request.form)
-    # print(url_for("static",filename=f"users/{current_user.id}/profileavtar.jpg"))
     c_path=os.getcwd()
     print(c_path)
     path_join=os.path.join(f"album/static/users/{current_user.id}","profileavtar.jpg")
     path_ex=os.path.exists(f"album/static/users/{current_user.id}/profileavtar.jpg")
-    # print(path_ex,"path_ex")
-    # print(path_join,"path_join")
-    if path_ex:
-        
-        # print("======",path_ex)
+    if path_ex:        
         profile_pic_path=(url_for("static",filename=f"users/{current_user.id}/profileavtar.jpg"))
         return render_template('settings.html',form = form,profile_pic_path=profile_pic_path)
     else:
         c_path=os.getcwd()
-        # print(c_path,"pppppppppp")
         profile_pic_path = "static/logos/profileavatar.jpg"
         return render_template('settings.html',form = form, profile_pic_path=profile_pic_path)
