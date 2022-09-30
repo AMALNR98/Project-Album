@@ -28,6 +28,7 @@
       </div>
     </div>
   </div>
+
   <!-- LastName input -->
   <div class="container h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -47,7 +48,6 @@
       </div>
     </div>
   </div>
-
 
   <!-- Email input -->
   <div class="container h-100">
@@ -80,32 +80,12 @@
                 <h6 class="mb-0">Bio</h6>
               </div>
               <div class="col-md-9 pe-5">
-                {{ form.bio(class="form-control", id="bio", value=current_user.bio) }}
-
+                {{ form.bio.process_data(current_user.bio) }}
+                {{ form.bio(class="form-control", id="bio") }}
               </div>
-
             </div>
-
             <!-- Upload Button -->
-            <!-- <input type=file name='photo' id="photo"> -->
-              {{ form.photo(id="photo", type="file" ) }}
-
-            <!-- <div class="d-flex justify-content-center align-items-center">
-
-              <button class="upload-button d-flex flex-row align-items-center" >
-
-                <div class="d-flex justify-content-center align-items-center upload-icon">
-
-                  <i class="fa fa-cloud-upload"></i>
-
-                </div>
-
-                <div class="upload-text">
-                <span>Upload</span>
-                </div>
-              </button>
-
-            </div> -->
+            {{ form.photo(id="photo", type="file" ) }}
 
             <!-- checkbox for public -->
             <div id="public_checkbox" class="form-check">
@@ -135,16 +115,13 @@
   <div class="card-up" style="background-color: #9D789B;"></div>
   <div class="avatar mx-auto bg-white">
     <img src="{{profile_pic_path}}" class="rounded-circle img-fluid" />
-
-
     <div class="card-body">
       <h4 class="mb-4">{{current_user.fname+" "+current_user.lname}}</h4>
       <hr />
-
-
       <p class="dark-grey-text mt-4">
         <i class="fas fa-quote-left pe-2"></i><b>{{current_user.bio}}</b>
       </p>
     </div>
   </div>
+
   {% endblock%}
