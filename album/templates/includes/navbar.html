@@ -46,7 +46,7 @@
             <a class="dropdown-item" href="#">{{current_user.fname}}</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="{{ url_for("album.get_settings") }}">Settings</a>
           </li>
           <li>
             <a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a>

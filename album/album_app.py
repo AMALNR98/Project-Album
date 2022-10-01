@@ -6,6 +6,7 @@ from flask_uploads import UploadSet, IMAGES
 
 from album.database import Album, Photo, db, User, Comment
 from album.forms import AlbumForm, PhotoForm, CommentForm, ProfileForm
+from album.helpers import get_profile_pic_path
 
 album_bp = Blueprint("album", "__name__")
 uploaded_images = UploadSet("photos", IMAGES)
@@ -240,53 +241,27 @@ def add_comment(user_id, album_name, photo_name):
 @album_bp.route('/settings', methods=['POST'])
 @login_required
 def update_profile():
-    
     form = ProfileForm(request.form)
-    path_ex=os.path.exists(f"album/static/users/{current_user.id}/profileavtar.jpg")
-    path_join=os.path.join(f"album/static/users/{current_user.id}","profileavtar.jpg")
-    print(form)
-    print(form.validate,"===form.validate")
-    if form.validate():  
+    if form.validate():
         current_user.fname = form.fname.data
         current_user.lname = form.lname.data
         current_user.bio = form.bio.data
         db.session.commit()
-        print("user updated successfully")
-        
-        if request.files['photo'].filename == "":
-            profile_pic_path = "static/logos/profileavatar.jpg"
-            return redirect(url_for('album.get_settings'))
-        elif path_ex:
-            profile_pic_path=path_join
-            os.remove(profile_pic_path)
+        current_app.logger.debug(f'update_profile: details updated successfully')
+        if request.files['photo'].filename != "":
+            default_pro_pic_path = os.path.join('album', 'static', 'users', str(current_user.id), 'profileavatar.jpg')
+            if os.path.exists(default_pro_pic_path):
+                os.remove(default_pro_pic_path)
             file_path = uploaded_images.save(
-            request.files["photo"], f"{current_user.id}",
-            name="profileavtar.jpg"
+                request.files["photo"], f"{current_user.id}",
+                name="profileavatar.jpg"
             )
-            photo_name = os.path.basename('users/'+file_path)
-            return redirect(url_for('album.get_settings'))
-        else:
-            print("something here")
-            file_path = uploaded_images.save(
-            request.files["photo"], f"{current_user.id}",
-            name="profileavtar.jpg"
-            )
-            photo_name = os.path.basename('users/'+file_path)
-            return redirect(url_for('album.get_settings'))
+        return redirect(url_for('album.get_settings'))
 
 
 @album_bp.route('/settings', methods=['GET'])
 @login_required
 def get_settings():
     form = ProfileForm(request.form)
-    c_path=os.getcwd()
-    print(c_path)
-    path_join=os.path.join(f"album/static/users/{current_user.id}","profileavtar.jpg")
-    path_ex=os.path.exists(f"album/static/users/{current_user.id}/profileavtar.jpg")
-    if path_ex:        
-        profile_pic_path=(url_for("static",filename=f"users/{current_user.id}/profileavtar.jpg"))
-        return render_template('settings.html',form = form,profile_pic_path=profile_pic_path)
-    else:
-        c_path=os.getcwd()
-        profile_pic_path = "static/logos/profileavatar.jpg"
-        return render_template('settings.html',form = form, profile_pic_path=profile_pic_path)
+    profile_pic_path = get_profile_pic_path(current_user)
+    return render_template('settings.html', form=form, profile_pic_path=profile_pic_path)
