@@ -5,7 +5,7 @@
     <li class="breadcrumb-item">
       <a
         href="{{url_for('album.view_album',
-           user_id=user.id ,album_name=album_name)}}"
+           user_id=user.slugified_id() ,album_name=album_name)}}"
         >albums</a
       >
     </li>

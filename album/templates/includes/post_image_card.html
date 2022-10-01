@@ -20,7 +20,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <form enctype="multipart/form-data" action="{{url_for('album.add_photo', album_name=album_name, user_id=user.id )}}" method="post">
+        <form enctype="multipart/form-data"
+          action="{{url_for('album.add_photo', album_name=album_name,
+          user_id=user.slugified_id() )}}" method="post">
           {{ form.csrf_token }}
          <div class="form-outline mb-2">
             {{form.description(class='form-control')}}
