@@ -300,7 +300,7 @@ def get_settings():
 def get_public_users():
     query = request.args.get('q')
     users = User.query.filter(User.fname.like(f'%{query}%'), User.public==True).all()
-    return jsonify(dict(users=[dict(name=f"{user.fname} {user.lname}", url=url_for('album.view_albums', user_id=user.id)) for user in users]))
+    return jsonify(dict(users=[dict(name=f"{user.fname} {user.lname}", url=url_for('album.view_albums', user_id=user.slugified_id())) for user in users]))
 
 
 @album_bp.route('/notifications', methods=['GET', ])

@@ -34,7 +34,7 @@ def format_notification(notification, current_user):
         notified_user = User.query.get(details['who'])
         photo = Photo.query.get(details['type_id'])
         album = Album.query.get(photo.album_id)
-        photo_url = url_for('album.view_photo', user_id=current_user.id, album_name=album.name, photo_name=photo.name)
+        photo_url = url_for('album.view_photo', user_id=current_user.slugified_id(), album_name=album.name, photo_name=photo.name)
         return dict(
             notification=f"{notified_user.fname} {notified_user.lname} reacted to your photo" if notified_user else 'guest user liked your photo',
             photo_url=photo_url,
@@ -45,7 +45,7 @@ def format_notification(notification, current_user):
         comment = Comment.query.get(details['type_id'])
         photo = Photo.query.get(comment.photo_id)
         album = Album.query.get(photo.album_id)
-        photo_url = url_for('album.view_photo', user_id=current_user.id, album_name=album.name, photo_name=photo.name)
+        photo_url = url_for('album.view_photo', user_id=current_user.slugified_id(), album_name=album.name, photo_name=photo.name)
         return dict(
             notification=f"{notified_user.fname} {notified_user.lname} commented on your photo" if notified_user else 'guest user commented on your photo',
             photo_url=photo_url

@@ -205,6 +205,7 @@ function fetchNotifications() {
                     notificationList.prepend(listItem)
                     let notificationCount = document.getElementById('notificationCount')
                     notificationCount.innerText = (Number.parseInt(notificationCount.innerText) + 1).toString()
+                    notificationCount.className = "badge rounded-pill badge-notification bg-danger"
                 })
             }
         })
