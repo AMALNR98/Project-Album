@@ -21,7 +21,7 @@ def index():
         albums = current_user.albums
         return render_template("home.html", user=current_user, albums=albums, form=form)
     else:
-        return render_template("home.html", user=current_user, albums=None, form=form)
+        return render_template("guest_home.html", user=current_user, albums=None, form=form)
 
        
 @album_bp.route('/<string:user_id>/albums', methods=['POST', ])
@@ -297,7 +297,6 @@ def get_settings():
 
 
 @album_bp.route('/users', methods=['GET', ])
-@login_required
 def get_public_users():
     query = request.args.get('q')
     users = User.query.filter(User.fname.like(f'%{query}%'), User.public==True).all()

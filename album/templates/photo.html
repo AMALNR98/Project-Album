@@ -6,11 +6,11 @@
       <a
         href="{{url_for('album.view_album',
            user_id=user.slugified_id() ,album_name=album_name)}}"
-        >albums</a
+        >Album</a
       >
     </li>
 
-    <li class="breadcrumb-item active">photo</li>
+    <li class="breadcrumb-item active">Photo</li>
   </ol>
 </nav>
 {% endblock %}
@@ -22,6 +22,7 @@
       src='{{ url_for("static", filename=photo_path) }}'
       class="d-block w-50 h-50"
       alt="{{photo_name}}"
+      style="object-fit: contain"
     />
   </a>
 </div>
@@ -108,8 +109,8 @@
           <td >{{photo.description}}</td>
         </tr>
         <tr>
-          <td>uploaded at</td>
-          <td >{{photo.uploaded_date}}</td>
+          <td>uploaded</td>
+          <td >{{photo.uploaded_date | fromnow }}</td>
         </tr>
       </tbody>
     </table>

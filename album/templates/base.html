@@ -26,38 +26,38 @@
 </head>
 
 <body>
-   {% block navbar %} 
+   {% block navbar %}
     {% include 'includes/navbar.html' %}
    {% endblock %}
-   
-  <div id="contentContainer" class="container-fluid mt-2">
+    <div id="contentContainer" class="container-fluid mt-2" style="height: 100vh">
   <div  class="row gx-1">
-    
+
     <div  id="content" class="col shadow-sm mb-5 bg-white rounded">
     <div  class="container">
-    
+
     {% block content %}
         {% block breadcrumb %}
         {% endblock %}
         {% block comments %}
         {% endblock %}
     {% endblock %}
-    
+
     </div>
     </div>
     <div id="sideBarCol" class="col-3 ms-2 shadow-sm mb-5 bg-white rounded me-0">
       {% block sidebar %}
-      {% endblock %} 
+      {% endblock %}
     </div>
   </div>
-  </div>
-  
-  <div class="footer">
+    <div class="footer">
    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
     © 2022 Copyright:
     <a class="text-reset fw-bold" href="/">Hamon Albums</a>
   </div>
-</div>
+  </div>
+  </div>
+
+
 
 <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>

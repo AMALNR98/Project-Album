@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+    body {
+        background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg');
+    }
+    #content {
+        background-color: transparent !important;
+        object-fit: contain;
+    }
+    #sideBarCol {
+        display: none;
+    }
+    </style>
+    <div class="container-fluid bg-image" style="height: 100vh;">
+    <h1 class="h1">Hamon Albums</h1>
+    <blockquote class="blockquote">
+        <h3 class="mb-0">Today everything exists to end in a photograph</h3>
+    </blockquote>
+    </div>
+{% endblock %}

@@ -5,7 +5,7 @@
     <nav class="breadcrumb">
      <ol class="breadcrumb">
          <li class="breadcrumb-item active"><a href="/">Home</a></li>
-         <li class="breadcrumb-item active"><a href="/">Albums</a></li>
+         <li class="breadcrumb-item active"><a href="/">Album</a></li>
      </ol>
  </nav>
     {% endblock %}
@@ -15,3 +15,7 @@
 {% endfor %}
 </div>
 {% endblock %}
+{% block sidebar %}
+{% include 'includes/user_profile.html' %}
+{% endblock %}
+

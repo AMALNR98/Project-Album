@@ -35,7 +35,7 @@
         style="height: 1.8em"
         />
         <ul
-        style="display: none;"
+        style="display: none;z-index: 10"
         id="searchList"
         class="position-absolute w-100 list-group"
         ></ul>
@@ -93,8 +93,8 @@
       </div>
     </div>
     {% else %}
-    <a class="btn btn-primary" href="{{url_for('auth.login')}}">Login</a>
-    <a class="btn btn-primary ms-1" href="{{url_for('auth.register')}}">Register</a>
+    <a class="btn btn-secondary" href="{{url_for('auth.login')}}">Login</a>
+    <a class="btn btn-secondary ms-1" href="{{url_for('auth.register')}}">Register</a>
     {% endif %}
   </div>
 </nav>
