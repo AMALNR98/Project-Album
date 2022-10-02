@@ -3,7 +3,6 @@ from wtforms import (
     BooleanField,
     StringField,
     PasswordField,
-    validators,
     DateField,
     SelectField,
     FileField,
@@ -11,7 +10,7 @@ from wtforms import (
 )
 from wtforms.validators import Email, Length, DataRequired, EqualTo
 from flask_wtf.file import FileRequired, FileAllowed
-from flask_wtf import FlaskForm,Form
+from flask_wtf import FlaskForm, Form
 
 
 class RegistrationForm(FlaskForm):
@@ -59,7 +58,7 @@ class PhotoForm(FlaskForm):
             ),
         ]
     )
-    status = SelectField(choices=[("private"), ("public")])
+    status = SelectField(choices=[("private", ), ("public", )])
 
 
 class AlbumForm(FlaskForm):
@@ -67,9 +66,11 @@ class AlbumForm(FlaskForm):
     description = TextAreaField("description", [Length(min=0, max=50)])
     status = SelectField("status", choices=["Private", "Public"])
 
+
 class CommentForm(FlaskForm):
-    display_name = StringField("name",[Length(min = 1, max =50), DataRequired()])
+    display_name = StringField("name", [Length(min=1, max=50), DataRequired()])
     comment = TextAreaField("description", [Length(min=0, max=50)])
+
 
 class ProfileForm(Form):
     fname = StringField(
@@ -83,6 +84,7 @@ class ProfileForm(Form):
     )
     lname = StringField([Length(min=0, max=25), DataRequired()])
     bio = TextAreaField([Length(min=0, max=100)])
+    public = BooleanField('make user searchable')
     photo = FileField(
         validators=[
             
@@ -92,5 +94,5 @@ class ProfileForm(Form):
         ]
     )
     email = StringField(
-        [Length(min=6, max=120), DataRequired("feild required"), Email("invalid email")]
+        [Length(min=6, max=120), DataRequired("field required"), Email("invalid email")]
     )

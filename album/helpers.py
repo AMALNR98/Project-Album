@@ -6,18 +6,17 @@ from flask import url_for
 from album.database import User, Album, Comment, Photo
 
 
-
-
 def profile_pic_exists(id_):
     profile_pic_path = os.path.join('album', 'static', 'users', str(id_), 'profileavatar.jpg')
     return os.path.exists(profile_pic_path)
 
 
-def get_profile_pic_path(current_user):
-    if not profile_pic_exists(current_user.id):
+def get_profile_pic_path(user):
+    if not user:
         return url_for('static', filename='logos/profileavatar.jpg')
-    return url_for('static', filename=f'users/{current_user.id}/profileavatar.jpg')
-
+    if not profile_pic_exists(user.id):
+        return url_for('static', filename='logos/profileavatar.jpg')
+    return url_for('static', filename=f'users/{user.id}/profileavatar.jpg')
 
 
 def parse_id_from_slug(slug: str) -> int:
@@ -37,7 +36,7 @@ def format_notification(notification, current_user):
         album = Album.query.get(photo.album_id)
         photo_url = url_for('album.view_photo', user_id=current_user.id, album_name=album.name, photo_name=photo.name)
         return dict(
-            notification=f"{notified_user.fname} {notified_user.lname} reacted to your photo",
+            notification=f"{notified_user.fname} {notified_user.lname} reacted to your photo" if notified_user else 'guest user liked your photo',
             photo_url=photo_url,
         )
 
@@ -48,6 +47,6 @@ def format_notification(notification, current_user):
         album = Album.query.get(photo.album_id)
         photo_url = url_for('album.view_photo', user_id=current_user.id, album_name=album.name, photo_name=photo.name)
         return dict(
-            notification=f"{notified_user.fname} {notified_user.lname} commented on your photo",
+            notification=f"{notified_user.fname} {notified_user.lname} commented on your photo" if notified_user else 'guest user commented on your photo',
             photo_url=photo_url
         )

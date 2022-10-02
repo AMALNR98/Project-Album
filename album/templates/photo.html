@@ -60,7 +60,7 @@
         </div>
       <div id="commentParent" class="col-md-12 col-lg-10 col-xl-8">
         
-        {% for comment in photo.comments %}
+        {% for comment in photo.comments.filter_by() %}
         {% include 'includes/comment_card.html' %}
         {% endfor %}
       </div>
@@ -108,7 +108,7 @@
           <td >{{photo.description}}</td>
         </tr>
         <tr>
-          <td>uploaded datetime</td>
+          <td>uploaded at</td>
           <td >{{photo.uploaded_date}}</td>
         </tr>
       </tbody>

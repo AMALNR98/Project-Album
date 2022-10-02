@@ -24,9 +24,7 @@
 ></script>
 
 </head>
-<body>
 
-</head>
 <body>
    {% block navbar %} 
     {% include 'includes/navbar.html' %}
@@ -39,10 +37,10 @@
     <div  class="container">
     
     {% block content %}
-      {% block breadcrumb %}
-      {% endblock %}
-  {% block comments %}
-    {% endblock %}
+        {% block breadcrumb %}
+        {% endblock %}
+        {% block comments %}
+        {% endblock %}
     {% endblock %}
     
     </div>

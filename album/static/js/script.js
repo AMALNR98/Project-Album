@@ -136,7 +136,7 @@ function addPostComment(e)  {
               </div>
             </div>
           </div>`
-        fetch(window.location.href + "/comment", {
+        fetch(`${window.location.href}/comment`, {
             method: 'POST',
             headers: {
             'Accept': 'application/json',
@@ -145,13 +145,14 @@ function addPostComment(e)  {
             )
             .then( r => r.json())
             .then( json => {
-
                 commentCard.getElementsByClassName('displayName')[0].innerText = json.display_name;
                 let commentSpan = document.createElement('span');
                 commentSpan.className = "text-dark ms-2";
                 commentSpan.innerText = json.comment;
                 commentCard.getElementsByClassName('displayName')[0].appendChild(commentSpan)
                 commentCard.getElementsByClassName('commentDate')[0].innerText = "now";
+                commentCard.getElementsByTagName('img')[0].src = json.pic
+                console.log(json.pic)
                 document.getElementById('commentParent').prepend(commentCard);
                 document.getElementById("commentInput").value = ""
 
