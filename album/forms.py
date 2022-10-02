@@ -1,4 +1,3 @@
-
 from wtforms import (
     BooleanField,
     StringField,
@@ -58,7 +57,7 @@ class PhotoForm(FlaskForm):
             ),
         ]
     )
-    status = SelectField(choices=[("private", ), ("public", )])
+    status = SelectField(choices=[("private",), ("public",)])
 
 
 class AlbumForm(FlaskForm):
@@ -84,10 +83,9 @@ class ProfileForm(Form):
     )
     lname = StringField([Length(min=0, max=25), DataRequired()])
     bio = TextAreaField([Length(min=0, max=100)])
-    public = BooleanField('make user searchable')
+    public = BooleanField("make user searchable")
     photo = FileField(
         validators=[
-            
             FileAllowed(
                 ["png", "jpeg", "jpg"],
             ),

@@ -7,7 +7,7 @@ from album.database import User
 
 
 def fromnow(date):
-    return timeago.format(date , datetime.datetime.utcnow())
+    return timeago.format(date, datetime.datetime.utcnow())
 
 
 def photo(user):
@@ -17,6 +17,5 @@ def photo(user):
 
 
 def add_filter(app):
-    app.jinja_env.filters['fromnow'] = fromnow
-    app.jinja_env.filters['photo'] = photo
-
+    app.jinja_env.filters["fromnow"] = fromnow
+    app.jinja_env.filters["photo"] = photo
