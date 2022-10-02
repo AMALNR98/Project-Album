@@ -104,7 +104,6 @@ def view_album(user_id, album_name):
         album = user.albums.filter_by(name=album_name).first_or_404()
         if album.public:
             photos = album.photos.filter_by(public=True).all()
-            # path = 'users/'  + str(user.id) + '/' + str(album.name)
             path = f'users/{user.id}/{album.name}'
             return render_template('photos.html', current_user=current_user, user=user, photos=photos, path=path, form = form,album_name = album_name, album=album)
         else:
@@ -150,11 +149,9 @@ def add_photo(user_id, album_name):
 @album_bp.route('/<string:user_id>/albums/<string:album_name>/<string:photo_name>')
 def view_photo(user_id, album_name, photo_name):
     user_id = parse_id_from_slug(user_id)
-    photo = None
-    if current_user.is_authenticated and current_user.id == user_id :
+    if current_user.is_authenticated and current_user.id == user_id:
         album = current_user.albums.filter_by(name=album_name).first_or_404()
         photo = album.photos.filter_by(name=photo_name, album_id=album.id).first_or_404()
-        # path = 'users/' + str(current_user.id) + '/' + str(album.name)
         path = os.path.join('users', str(current_user.id), album.name)
         return render_template('photo.html', photo=photo, current_user=current_user, user=current_user, path=path, album_name=album_name)
     else:
@@ -163,9 +160,8 @@ def view_photo(user_id, album_name, photo_name):
         if album.public:
             photo = Photo.query.filter_by(name=photo_name, album_id=album.id).first_or_404()
             if photo.public:
-                # path = 'users/'  + str(user.id) + '/' + str(album.name)
                 path = os.path.join('users', str(user.id), album.name)
-                return render_template('photo.html', photo=photo, current_user=current_user, user=user, path=path, description = photo.description, album_name=album_name)
+                return render_template('photo.html', photo=photo, current_user=current_user, user=user, path=path, description=photo.description, album_name=album_name)
             else:
                 return current_app.login_manager.unauthorized()
         else: 

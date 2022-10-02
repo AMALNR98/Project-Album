@@ -6,7 +6,7 @@ function deleteAlbum(e) {
         if(r.status === 204) {
             let modalBody = document.getElementById('modalBody')
             modalBody.className = "alert alert-success" 
-            modalBody.innerText = "Success: Album deleted successfully, redirecting..."
+            modalBody.innerText = "Success: Album deleted successfully"
             let modalTitle = document.getElementById('modalTitle');
             modalTitle.innerText = "Success";
             setTimeout(() => window.location = '/', 2000)
@@ -25,12 +25,12 @@ function deletePhoto(e) {
         if (r.status == 204) {
         let modalBody = document.getElementById('modalBody');
         modalBody.className = "alert alert-success";
-        modalBody.innerText = "Success: Photo deleted successfully, redirecting...";
+        modalBody.innerText = "Success: Photo deleted successfully";
         let modalTitle = document.getElementById('modalTitle');
             modalTitle.innerText = "Success";
        
         setTimeout(()=> {
-            redirectUrl = url.substring(0, url.lastIndexOf('/'));
+            let redirectUrl = url.substring(0, url.lastIndexOf('/'));
             setTimeout(() => window.location = redirectUrl, 2000)
         })
 

@@ -7,7 +7,7 @@ from album.database import User
 
 
 def fromnow(date):
-    return timeago.format(date, datetime.datetime.now())
+    return timeago.format(date , datetime.datetime.utcnow())
 
 
 def photo(user):

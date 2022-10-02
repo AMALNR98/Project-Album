@@ -8,8 +8,8 @@
         {% endif %}
         <a href="{{url_for('album.view_album', user_id=user.slugified_id(), album_name=album.name)}}"><img height="150px" class="card-img-top" src="{{url_for('static', filename=photo_path)}}" alt="Sample Title"></a>
         <div class="card-body">
-          <p class="card-title lead"><a href="{{url_for('album.view_album',
-            user_id=user.slugified_id(), album_name=album.name)}}">{{album.name}}</a></p>
+          <h1 class="card-title lead"><a href="{{url_for('album.view_album',
+            user_id=user.slugified_id(), album_name=album.name)}}">{{album.name}}</a></h1>
         </div>
       </div>
     </div>

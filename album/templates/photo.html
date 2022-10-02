@@ -61,7 +61,7 @@
         </div>
       <div id="commentParent" class="col-md-12 col-lg-10 col-xl-8">
         
-        {% for comment in photo.comments.filter_by() %}
+        {% for comment in photo.comments %}
         {% include 'includes/comment_card.html' %}
         {% endfor %}
       </div>
