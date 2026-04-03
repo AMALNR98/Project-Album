@@ -1,31 +1,25 @@
-
-<div class="card mb-3">
-          <div class="card-body">
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src={{ comment.user_id | photo }} alt="avatar" width="40"
-                height="40" style="object-fit: cover" />
-              <div class="w-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h6 class="text-primary fw-bold mb-0">
-                    {{comment.display_name}}
-                    <span class="text-dark ms-2">{{comment.comment}}</span>
-                  </h6>
-                  <p class="mb-0">{{comment.created_date | fromnow }}</p>
+<article class="comment-card">
+    <div class="d-flex flex-start gap-3">
+        <img
+            class="rounded-circle comment-avatar"
+            src="{{ comment.user_id | photo }}"
+            alt="{{ comment.display_name }}"
+        />
+        <div class="w-100">
+            <div class="comment-card__header">
+                <div>
+                    <h3 class="media-card__title mb-1">{{ comment.display_name }}</h3>
+                    <p class="comment-card__body mb-0">{{ comment.comment }}</p>
                 </div>
-                <div class="d-flex justify-content-between align-items-center">
-                  <p class="small mb-0" style="color: #aaa;">
-                    <a href="#!" class="link-grey">Remove</a> •
-                    <a href="#!" class="link-grey">Reply</a> •
-                    <a href="#!" class="link-grey">Translate</a>
-                  </p>
-                  <div class="d-flex flex-row">
-                    <i class="fas fa-star text-warning me-2"></i>
-                    <i class="far fa-check-circle" style="color: #aaa;"></i>
-                  </div>
-                </div>
-              </div>
+                <p class="media-card__meta mb-0">{{ comment.created_date | fromnow }}</p>
             </div>
-          </div>
+            <div class="comment-card__footer mt-3">
+                <p class="media-card__meta mb-0">Shared with the album community</p>
+                <div class="d-flex flex-row gap-3 align-items-center">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="far fa-check-circle muted-note"></i>
+                </div>
+            </div>
         </div>
-
+    </div>
+</article>
