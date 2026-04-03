@@ -1,159 +1,92 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" class="mx-1 mx-md-4 mt-4 mb-4" autocomplete="off" enctype=multipart/form-data>
-
-  <!-- FirstName input -->
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-9">
-        <div class="card" style="border-radius: 0;border-top-left-radius: .5rem; border-top-right-radius: .5rem">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-md-3 ps-5">
-                <h6 class="mb-0">First Name</h6>
-              </div>
-
-              <div class="col-md-9 pe-5">
-                {{ form.fname(class="form-control", id="fname", value=current_user.fname) }}
-                {% if form.fname.errors %}
-                {% for error in form.fname.errors %}
-                <div class="text-danger ms-2">{{error}}</div>
-                {% endfor %}
-                {% endif %}
-              </div>
+    <div class="content-stack">
+        <div class="page-hero">
+            <div>
+                <p class="eyebrow">Settings</p>
+                <h1 class="page-title">Profile preferences</h1>
+                <p class="page-subtitle">A more elegant account editor with clearer labels, better spacing, and accessible form states.</p>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- LastName input -->
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-9">
-        <div class="card" style="border-radius: 0">
-          <div class="card-body">
-            <div class="row align-items-center ">
-              <div class="col-md-3 ps-5">
-                <h6 class="mb-0">Last Name</h6>
-              </div>
-              <div class="col-md-9 pe-5">
-                {{ form.lname(class="form-control", id="lname", value=current_user.lname) }}
-              </div>
+        <form method="post" class="settings-form" autocomplete="off" enctype="multipart/form-data">
+            <div class="settings-grid">
+                <section class="app-panel settings-row">
+                    <div>
+                        <h2 class="settings-row__title">First name</h2>
+                        <p class="settings-row__hint">Displayed on your public and private profile surfaces.</p>
+                    </div>
+                    <div class="field-group">
+                        {{ form.fname(class="form-control", id="fname", value=current_user.fname, placeholder="First name") }}
+                        {% if form.fname.errors %}
+                            {% for error in form.fname.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </section>
+
+                <section class="app-panel settings-row">
+                    <div>
+                        <h2 class="settings-row__title">Last name</h2>
+                        <p class="settings-row__hint">Used together with your first name across albums and comments.</p>
+                    </div>
+                    <div class="field-group">
+                        {{ form.lname(class="form-control", id="lname", value=current_user.lname, placeholder="Last name") }}
+                    </div>
+                </section>
+
+                <section class="app-panel settings-row">
+                    <div>
+                        <h2 class="settings-row__title">Email</h2>
+                        <p class="settings-row__hint">Account email remains read-only here for safety.</p>
+                    </div>
+                    <div class="field-group">
+                        <input type="text" disabled class="form-control" placeholder="{{ current_user.email }}">
+                    </div>
+                </section>
+
+                <section class="app-panel settings-row">
+                    <div>
+                        <h2 class="settings-row__title">Bio</h2>
+                        <p class="settings-row__hint">Add a concise line that gives your gallery a stronger identity.</p>
+                    </div>
+                    <div class="field-group">
+                        {% set _ = form.bio.process_data(current_user.bio) %}
+                        {{ form.bio(style="width:100%;", class="form-control", placeholder="Tell people a little about your style") }}
+                    </div>
+                </section>
+
+                <section class="app-panel settings-row">
+                    <div>
+                        <h2 class="settings-row__title">Profile avatar</h2>
+                        <p class="settings-row__hint">Upload a square photo for the cleanest result across the interface.</p>
+                    </div>
+                    <div class="field-group">
+                        {{ form.photo(style="width:100%;", class="form-control") }}
+                    </div>
+                </section>
+
+                <section class="app-panel settings-row">
+                    <div>
+                        <h2 class="settings-row__title">Discoverability</h2>
+                        <p class="settings-row__hint">Choose whether your profile can appear in search suggestions.</p>
+                    </div>
+                    <div class="settings-toggle">
+                        <input class="form-check-input" name="public" id="public" type="checkbox" {{ 'checked' if current_user.public else '' }}>
+                        <label class="form-check-label mb-0" for="public">Make profile searchable</label>
+                    </div>
+                </section>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Email input -->
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-9">
-        <div class="card" style="border-radius: 0">
-          <div class="card-body">
-            <div class="row align-items-center ">
-              <div class="col-md-3 ps-5">
-                <h6 class="mb-0">Email</h6>
-              </div>
-              <div class="col-md-9 pe-5">
-                <input type="text" disabled class="form-control form-control-lg" placeholder="{{current_user.email}}" />
-              </div>
+            <div class="inline-actions">
+                <button class="btn btn-primary" id="updatebtn" type="submit">Update profile</button>
             </div>
-          </div>
-        </div>
-      </div>
+        </form>
     </div>
-  </div>
-
-  <!-- Bio input -->
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-9">
-        <div class="card" style="border-radius: 0">
-          <div class="card-body">
-            <div class="row align-items-center ">
-              <div class="col-md-3 ps-5">
-                <h6 class="mb-0">Bio</h6>
-              </div>
-              <div class="col-md-9 pe-5">
-                  {% set _ = form.bio.process_data(current_user.bio) %}
-                  {{ form.bio(style="width:100%;", class="form-control form-control-lg") }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-9">
-        <div class="card" style="border-radius: 0">
-          <div class="card-body">
-            <div class="row align-items-center ">
-              <div class="col-md-3 ps-5">
-                <h6 class="mb-0">Profile avatar</h6>
-              </div>
-              <div class="col-md-9 pe-5">
-                  {{ form.photo(style="width:100%;", class="form-control form-control-lg") }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-9">
-        <div class="card" style="border-radius: 0;border-bottom-left-radius: .5rem; border-bottom-right-radius: .5rem">
-          <div class="card-body">
-           <div class="row align-items-center">
-              <div class="col-md-3 ps-5 text-wrap">
-
-                  <h6 class="form-check-label mb-0" for="public">Make profile searchable</h6>
-              </div>
-               <div class="col">
-                   <input class="form-check-input" name="public" id="public" type="checkbox" {{ 'checked' if current_user.public else '' }}>
-               </div>
-               </div>
-           </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    {#    <div class="ml-auto"><button type="submit" class="btn btn-primary">Update</button></div>#}
-<div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-9">
-        <div class="card" style="border-radius: 0;border-bottom-left-radius: .5rem; border-bottom-right-radius: .5rem">
-          <div class="card-body">
-           <div class="d-flex">
-               <div style="margin-left: auto">
-                   <button class="btn btn-primary">Update</button>
-               </div>
-           </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-</form>
 {% endblock %}
 
-
 {% block sidebar %}
-
-{% include 'includes/sidebar_profile.html' %}
-
-  {% endblock%}
+    {% include 'includes/sidebar_profile.html' %}
+{% endblock %}
