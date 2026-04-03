@@ -1,21 +1,32 @@
 {% extends 'base.html' %}
+
 {% block content %}
+    <div class="content-stack">
+        <div class="breadcrumb-shell">
+            <nav class="breadcrumb" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{{ url_for('album.index') }}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Albums</li>
+                </ol>
+            </nav>
+        </div>
 
-    {% block breadcrumb %}
-    <nav class="breadcrumb">
-     <ol class="breadcrumb">
-         <li class="breadcrumb-item active"><a href="/">Home</a></li>
-         <li class="breadcrumb-item active"><a href="/">Album</a></li>
-     </ol>
- </nav>
-    {% endblock %}
-<div class="row">
-{% for album in albums %}
- {% include 'includes/album_card.html' %}
-{% endfor %}
-</div>
+        <div class="page-hero">
+            <div>
+                <p class="eyebrow">Albums</p>
+                <h1 class="page-title">{{ user.fname }}'s collections</h1>
+                <p class="page-subtitle">Explore albums in a more structured grid with clearer labels, improved readability, and premium visual rhythm.</p>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            {% for album in albums %}
+                {% include 'includes/album_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
+
 {% block sidebar %}
-{% include 'includes/user_profile.html' %}
+    {% include 'includes/user_profile.html' %}
 {% endblock %}
-
