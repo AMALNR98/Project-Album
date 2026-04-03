@@ -106,33 +106,24 @@ function copyPublickLink(e) {
 
 function addPostComment(e)  {
     if (e.key == "Enter") {
-        let displayName = "sanju";
-        let commentText = "this is a comment";
-        let commentDate = "24-03-1998";
         let commentCard = document.createElement("div");
-        commentCard.className = "card mb-3"
-        commentCard.innerHTML = `<div class="card-body">
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="40"
-                height="40" />
-              <div class="w-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h6 id="displayName" class="text-primary fw-bold mb-0 displayName">
-                    <span id="commentText" class="commentText text-dark ms-2">comment</span>
-                  </h6>
-                  <p id="commentDate" class="mb-0 commentDate">date</p>
+        commentCard.className = "comment-card"
+        commentCard.innerHTML = `<div class="d-flex flex-start gap-3">
+            <img class="rounded-circle comment-avatar" src="" alt="avatar" />
+            <div class="w-100">
+              <div class="comment-card__header">
+                <div>
+                  <h3 class="media-card__title mb-1 displayName"></h3>
+                  <p class="comment-card__body mb-0 commentText"></p>
                 </div>
-                <div class="d-flex justify-content-between align-items-center">
-                  <p class="small mb-0" style="color: #aaa;">
-                    <a href="#!" class="link-grey">Remove</a> •
-                    <a href="#!" class="link-grey">Reply</a> •
-                    <a href="#!" class="link-grey">Translate</a>
-                  </p>
-                  <div class="d-flex flex-row">
-                    <i class="fas fa-star text-warning me-2"></i>
-                    <i class="far fa-check-circle" style="color: #aaa;"></i>
-                  </div> </div>
+                <p class="media-card__meta mb-0 commentDate"></p>
+              </div>
+              <div class="comment-card__footer mt-3">
+                <p class="media-card__meta mb-0">Shared with the album community</p>
+                <div class="d-flex flex-row gap-3 align-items-center">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="far fa-check-circle muted-note"></i>
+                </div>
               </div>
             </div>
           </div>`
@@ -146,13 +137,9 @@ function addPostComment(e)  {
             .then( r => r.json())
             .then( json => {
                 commentCard.getElementsByClassName('displayName')[0].innerText = json.display_name;
-                let commentSpan = document.createElement('span');
-                commentSpan.className = "text-dark ms-2";
-                commentSpan.innerText = json.comment;
-                commentCard.getElementsByClassName('displayName')[0].appendChild(commentSpan)
+                commentCard.getElementsByClassName('commentText')[0].innerText = json.comment;
                 commentCard.getElementsByClassName('commentDate')[0].innerText = "now";
                 commentCard.getElementsByTagName('img')[0].src = json.pic
-                console.log(json.pic)
                 document.getElementById('commentParent').prepend(commentCard);
                 document.getElementById("commentInput").value = ""
 
@@ -214,6 +201,20 @@ function fetchNotifications() {
 
 
 function main() {
+    if (document.querySelector('.app-navbar') != null) {
+        let navbar = document.querySelector('.app-navbar');
+        let syncNavbarState = () => {
+            if (window.scrollY > 12) {
+                navbar.classList.add('navbar-scrolled');
+            }
+            else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        }
+        syncNavbarState();
+        window.addEventListener('scroll', syncNavbarState, {passive: true});
+    }
+
     if (document.getElementById('deleteAlbumButton') != null ){
         document.getElementById('deleteAlbumButton').onclick = e => deleteAlbum(e);
     }
