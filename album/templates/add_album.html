@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>{{get_flashed_messages()[0]}}</p>
-    <form method="post" class="m-3">
-        <input type="text" name="name" placeholder="album name">
-        <input type="text" name="description"  placeholder="description">
-        <input type="submit" value="submit">
-    </form>
+    <div class="content-stack">
+        <div class="page-hero">
+            <div>
+                <p class="eyebrow">Create</p>
+                <h1 class="page-title">Add an album</h1>
+                <p class="page-subtitle">This direct form keeps the same backend behavior, but now follows the shared design system for forms and actions.</p>
+            </div>
+        </div>
 
+        <form method="post" class="app-panel content-stack">
+            <div class="field-group">
+                <label class="field-label" for="album-name-inline">Album name</label>
+                <input id="album-name-inline" type="text" name="name" class="form-control" placeholder="Album name">
+            </div>
+            <div class="field-group">
+                <label class="field-label" for="album-description-inline">Description</label>
+                <input id="album-description-inline" type="text" name="description" class="form-control" placeholder="Description">
+            </div>
+            <div class="inline-actions">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
 {% endblock %}
