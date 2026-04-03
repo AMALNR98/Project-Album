@@ -1,123 +1,142 @@
 {% extends 'base.html' %}
+
 {% block content %}
-
-
-{% block breadcrumb %}
-    <nav class="breadcrumb">
-     <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="/">Home</a></li>
-         <li class="breadcrumb-item">albums</li>
-     </ol>
- </nav>
-    {% endblock %}
-<div class="row">
-    {% for photo in photos %}
-    {% set photo_path = path + '/' + photo.name %}
-    {% include 'includes/image_card.html' %}
-    {% endfor %}
-    {% if current_user.is_authenticated  and current_user.id == user.id %}
-    {% include 'includes/post_image_card.html' %}
-    {% endif %}
-</div>
-
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 id="modalTitle" class="modal-title" id="exampleModalLongTitle">Warning</h5>
-        <button type="button" class="close btn btn-secondary " data-mdb-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id="modalBody" class="alert alert-warning" role="alert">
-           Warning: you are about to delete the album along with all the photos inside it
+    <div class="content-stack">
+        <div class="breadcrumb-shell">
+            <nav class="breadcrumb" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{{ url_for('album.index') }}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ album.name }}</li>
+                </ol>
+            </nav>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-        <button id="deleteAlbumButton" type="button" class="btn btn-primary">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="modal fade" id="publishModalCenter" tabindex="-1" role="dialog" aria-labelledby="publishModalCenter" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="publishModalTitle">Warning</h5>
-        <button type="button" class="btn btn-secondary close" data-mdb-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id="publishModalBody" class="alert alert-warning" role="alert">
-           Warning: you are about to make this album public. 
+        <div class="page-hero">
+            <div>
+                <p class="eyebrow">Album</p>
+                <h1 class="page-title">{{ album.name }}</h1>
+                <p class="page-subtitle">{{ album.description if album.description else 'A curated sequence of photos presented in a faster, cleaner gallery layout.' }}</p>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-        <button id="publishAlbumButton" type="button" class="btn btn-primary">Publish</button>
-      </div>
+
+        <div class="content-grid">
+            {% for photo in photos %}
+                {% set photo_path = path + '/' + photo.name %}
+                {% include 'includes/image_card.html' %}
+            {% endfor %}
+            {% if current_user.is_authenticated and current_user.id == user.id %}
+                {% include 'includes/post_image_card.html' %}
+            {% endif %}
+        </div>
     </div>
-  </div>
-</div>
 
-{% endblock %}
-{% block sidebar %}
-
-    <ul class="list-group">
-        {% if current_user.is_authenticated and current_user.id == user.id %}
-                <div class="btn btn-group w-100" role="group" aria-label="Basic example">
-                    <button id="deleteAlbumButton" title="delete album"  class="btn btn-secondary" type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModalCenter" class="btn btn-secondary"><i class="fa fa-trash"></i></button>
-                    <button id="editDetailsButton" title="edit details" class="btn btn-secondary" type="button" data-mdb-toggle="modal" data-mdb-target="" class="btn btn-secondary"><i class="fa fa-edit"></i></button>
-                    {% if not album.public %}
-                    <button id="editStatusButton" class="btn btn-secondary" 
-                    title="make public"
-                     type="button" data-mdb-toggle="modal" data-mdb-target="#publishModalCenter" class="btn btn-secondary">
-                        <i class="fa fa-upload"></i>
-                    </button>
-                    {% endif %}
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <p class="eyebrow mb-2">Warning</p>
+                        <h5 id="modalTitle" class="modal-title">Delete this album?</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <div id="modalBody" class="alert alert-warning" role="alert">
+                        Warning: you are about to delete the album along with all the photos inside it.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button id="deleteAlbumButton" type="button" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="publishModalCenter" tabindex="-1" aria-labelledby="publishModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <p class="eyebrow mb-2">Visibility</p>
+                        <h5 class="modal-title" id="publishModalTitle">Publish this album?</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="publishModalBody" class="alert alert-warning" role="alert">
+                        Warning: you are about to make this album public.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                    <button id="publishAlbumButton" type="button" class="btn btn-primary">Publish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <section class="profile-panel content-stack">
+        {% if current_user.is_authenticated and current_user.id == user.id %}
+            <div class="button-cluster">
+                <button
+                    title="Delete album"
+                    class="btn btn-secondary"
+                    type="button"
+                    data-mdb-toggle="modal"
+                    data-mdb-target="#exampleModalCenter"
+                >
+                    <i class="fa fa-trash"></i>
+                    Delete
+                </button>
+                <button id="editDetailsButton" title="Edit details" class="btn btn-secondary" type="button">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </button>
+                {% if not album.public %}
+                    <button
+                        id="editStatusButton"
+                        class="btn btn-primary"
+                        title="Make public"
+                        type="button"
+                        data-mdb-toggle="modal"
+                        data-mdb-target="#publishModalCenter"
+                    >
+                        <i class="fa fa-upload"></i>
+                        Publish
+                    </button>
+                {% endif %}
+            </div>
         {% endif %}
-        <li class="list-group-item">
-          <table class="table">
-            <tbody>
-            <tr>
-              <td>name</td>
-              <td>{{album.name}}</td>
-            </tr>
-            <tr>
-              <td>description</td>
-              <td>{{album.description if album.description else 'no descriptions'}}</td>
-            </tr> 
-            <tr>
-              <td>status</td>
-              <td> {{'public' if album.public else 'private'}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </li>
-  {% if album.public %}
 
-  <div class="btn btn-group w-100" role="group">
-      <button
-        title="copy album link"
-        data-toggle="tooltip"
-        class="btn btn-secondary w-100"
-        type="button" 
-        data-html="true"
-        id="copyLinkButton">
-        <i class="fa fa-copy"></i>
-      <span id="tooltipSpan">copy</span>
-      </button>
+        <div class="app-panel">
+            <p class="eyebrow">Album Details</p>
+            <table class="table info-table">
+                <tbody>
+                    <tr>
+                        <td class="info-table__label">Name</td>
+                        <td>{{ album.name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="info-table__label">Description</td>
+                        <td>{{ album.description if album.description else 'No description added yet.' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="info-table__label">Status</td>
+                        <td><span class="status-pill">{{ 'Public' if album.public else 'Private' }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-
-  </div>
-  {% endif %}
-
-        <script src="{{url_for('static', filename='js/script.js')}}"></script>
-    </ul>
-</div>
+        {% if album.public %}
+            <button title="Copy album link" class="btn btn-secondary w-100" type="button" id="copyLinkButton">
+                <i class="fa fa-copy"></i>
+                Copy share link
+                <span id="tooltipSpan">copy</span>
+            </button>
+        {% endif %}
+    </section>
 {% endblock %}
