@@ -1,118 +1,104 @@
-{% extends "auth_base.html" %}
-<p>{{errors}}</p>
+{% extends 'auth_base.html' %}
+
 {% block form %}
-<section class="vh-100" style="background-color: #eee;">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+    <section class="auth-layout app-panel">
+        <div class="auth-card">
+            <p class="eyebrow">Create Account</p>
+            <h1 class="auth-heading">Build your album space</h1>
+            <p class="auth-subtitle">Set up a profile with modern onboarding, improved validation visibility, and cleaner form hierarchy.</p>
 
-                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+            <form action="{{ url_for('auth.register') }}" method="post" class="auth-form mt-4" autocomplete="off">
+                {{ form.csrf_token }}
 
-                <form action="{{url_for('auth.register')}}" method="post" class="mx-1 mx-md-4" autocomplete="off">
-
-                  {{ form.csrf_token }} 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      {{ form.fname(class="form-control", id="fname", ) }}
-                      <label class="form-label" for="fname">Your First Name</label>
-                      {% if form.fname.errors %}
-                      {% for error in form.fname.errors %}
-                      <div class="text-danger ms-2">{{error}}</div>
-                      {% endfor %}
-                      {% endif %}
+                <div class="auth-form__row">
+                    <div class="field-group">
+                        <label class="field-label" for="fname">First name</label>
+                        {{ form.fname(class="form-control", id="fname", placeholder="Amal") }}
+                        {% if form.fname.errors %}
+                            {% for error in form.fname.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                  </div>
 
-                <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      {{ form.lname(class="form-control", id="lname", ) }}
-                      <label class="form-label" for="lname">Your Last Name</label>
-                      {% if form.lname.errors %}
-                      {% for error in form.lname.errors %}
-                      <div class="text-danger ms-2">{{error}}</div>
-                      {% endfor %}
-                      {% endif %}
+                    <div class="field-group">
+                        <label class="field-label" for="lname">Last name</label>
+                        {{ form.lname(class="form-control", id="lname", placeholder="Nochiyil") }}
+                        {% if form.lname.errors %}
+                            {% for error in form.lname.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                  </div>
-                
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-calendar fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      {{ form.dob(class="form-control datepicker", id="dob", ) }}
-                      
-                      <!-- <label class="form-label" for="lname">Date</label> -->
-                    </div>
-                  </div>
-                    
-                <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      {{ form.email(class="form-control", id="email", autocomplete="off") }}
-                      <label class="form-label" for="email">Email</label>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="dob">Date of birth</label>
+                    {{ form.dob(class="form-control datepicker", id="dob") }}
+                    {% if form.dob.errors %}
+                        {% for error in form.dob.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="email">Email</label>
+                    {{ form.email(class="form-control", id="email", autocomplete="off", placeholder="name@example.com") }}
                     {% if form.email.errors %}
-                      {% for error in form.email.errors %}
-                      <div class="text-danger ms-2">{{error}}</div>
-                      {% endfor %}
-                      {% endif %}
+                        {% for error in form.email.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="auth-form__row">
+                    <div class="field-group">
+                        <label class="field-label" for="password">Password</label>
+                        {{ form.password(class="form-control", id="password", autocomplete="off", placeholder="Create a password") }}
+                        {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                  </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      {{ form.password(class="form-control", id="password", autocomplete="off") }}
-                      <label class="form-label" for="password">Password</label>
-                      {% if form.password.errors %}
-                      {% for error in form.password.errors %}
-                      <div class="text-danger ms-2">{{error}}</div>
-                      {% endfor %}
-                      {% endif %}
+                    <div class="field-group">
+                        <label class="field-label" for="confirm">Confirm password</label>
+                        {{ form.confirm(class="form-control", id="confirm", placeholder="Repeat password") }}
+                        {% if form.confirm.errors %}
+                            {% for error in form.confirm.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                  </div>
+                </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      {{ form.confirm(class="form-control", id="confirm" )}}
-                      <label class="form-label" for="confirm">Repeat Your Password</label>
-                      {% if form.confirm.errors %}
-                      {% for error in form.confirm.errors %}
-                      <div class="text-danger ms-2">{{error}}</div>
-                      {% endfor %}
-                      {% endif %}
-                    </div>
-                  </div>
-
-                  
-
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="submit" class="btn btn-primary btn-lg">Register</button>
-                  </div>
-
-                </form>
-
-              </div>
-              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                  class="img-fluid" alt="Sample image">
-
-              </div>
-            </div>
-          </div>
+                <div class="inline-actions pt-2">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">Back to login</a>
+                </div>
+            </form>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-
+        <aside class="auth-copy">
+            <p class="eyebrow">2026 SaaS Look</p>
+            <h2 class="auth-copy__title">Minimal, futuristic, and still easy to use.</h2>
+            <p class="auth-copy__text">The updated visual system uses one consistent palette, softer glass panels, responsive spacing, and accessible contrast so the app feels more premium without becoming noisy.</p>
+            <div class="auth-feature-list">
+                <div class="auth-feature">
+                    <i class="fa-regular fa-gem"></i>
+                    <div>Luxury-inspired visuals with restrained motion and cleaner surfaces.</div>
+                </div>
+                <div class="auth-feature">
+                    <i class="fa-regular fa-window-maximize"></i>
+                    <div>Shared components keep cards, forms, tables, and modals visually aligned.</div>
+                </div>
+                <div class="auth-feature">
+                    <i class="fa-regular fa-mobile-screen"></i>
+                    <div>Layouts collapse gracefully across desktop, tablet, and mobile breakpoints.</div>
+                </div>
+            </div>
+        </aside>
+    </section>
 {% endblock %}
-
-
