@@ -1,21 +1,37 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <style>
-    body {
-        background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg');
-    }
-    #content {
-        background-color: transparent !important;
-        object-fit: contain;
-    }
-    #sideBarCol {
-        display: none;
-    }
-    </style>
-    <div class="container-fluid bg-image" style="height: 100vh;">
-    <h1 class="h1">Hamon Albums</h1>
-    <blockquote class="blockquote">
-        <h3 class="mb-0">Today everything exists to end in a photograph</h3>
-    </blockquote>
-    </div>
+    <section class="hero-card hero-card--guest app-panel position-relative">
+        <div class="hero-ornament"></div>
+        <div class="content-stack position-relative">
+            <div>
+                <p class="eyebrow">Premium Photo Albums</p>
+                <h1 class="page-title">A modern home for every album you want to preserve.</h1>
+                <p class="page-subtitle">Hamon Albums now feels closer to a polished SaaS product: stronger typography, clearer navigation, cleaner panels, and a calmer visual rhythm built for publishing and browsing memories.</p>
+            </div>
+            <div class="guest-actions">
+                <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Create an account</a>
+                <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">Sign in</a>
+            </div>
+            <div class="content-grid">
+                <div class="app-panel">
+                    <p class="eyebrow">Albums</p>
+                    <h2 class="media-card__title">Curated collections</h2>
+                    <p class="media-card__meta">Structured grids and elevated cards make every collection feel intentional.</p>
+                </div>
+                <div class="app-panel">
+                    <p class="eyebrow">Sharing</p>
+                    <h2 class="media-card__title">Public-ready links</h2>
+                    <p class="media-card__meta">Cleaner actions and clearer metadata make publishing feel effortless.</p>
+                </div>
+                <div class="app-panel">
+                    <p class="eyebrow">Responsiveness</p>
+                    <h2 class="media-card__title">Built for every screen</h2>
+                    <p class="media-card__meta">The interface stays balanced across desktop, tablet, and mobile layouts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
+
+{% block sidebar %}{% endblock %}
