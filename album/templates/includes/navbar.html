@@ -1,101 +1,89 @@
-   <!-- Navbar -->
+<nav class="navbar navbar-expand-lg app-navbar">
+    <div class="container-fluid align-items-center">
+        <a class="navbar-brand" href="{{ url_for('album.index') }}">
+            <span class="brand-mark"><i class="fa-solid fa-layer-group"></i></span>
+            <span>Hamon Albums</span>
+        </a>
 
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
-  <!-- Container wrapper -->
-  <div class="container-fluid">
-    <!-- Toggle button -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-mdb-toggle="collapse"
-      data-mdb-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <i class="fas fa-bars"></i>
-    </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <form id="searchForm" class="app-nav-search mt-3 mt-lg-0">
+                <i class="fa-solid fa-magnifying-glass app-search-icon"></i>
+                <input
+                    id="searchBar"
+                    type="search"
+                    class="form-control app-search-input"
+                    placeholder="Search creators, albums, moments"
+                    autocomplete="off"
+                />
+                <ul
+                    id="searchList"
+                    class="position-absolute w-100 list-group app-search-list"
+                    style="display: none; z-index: 10;"
+                ></ul>
+            </form>
 
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
-      <h1>
-        <a style="color: grey;" class="navbar-brand mt-2 mt-lg-0" href="{{url_for('album.index')}}">Hamon Albums</a>
-      </h1>
+            {% if current_user.is_authenticated %}
+                <div class="d-flex align-items-center justify-content-end app-nav-actions">
+                    <div class="dropdown">
+                        <a
+                            class="app-icon-button link-secondary position-relative"
+                            href="#"
+                            id="navbarDropdownMenuLink"
+                            role="button"
+                            data-mdb-toggle="dropdown"
+                            aria-expanded="false"
+                            aria-label="Open notifications"
+                        >
+                            <i class="fas fa-bell"></i>
+                            <span id="notificationCount" class="badge rounded-pill badge-notification">0</span>
+                        </a>
+                        <ul
+                            id="notificationList"
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdownMenuLink"
+                        ></ul>
+                    </div>
 
-      <form id="searchForm" class="d-flex input-group">
-        <div class="position-relative">
-        <input
-        id="searchBar"
-        type="search"
-        class="form-control"
-        placeholder="Search"
-        autocomplete="off"
-        style="height: 1.8em"
-        />
-        <ul
-        style="display: none;z-index: 10"
-        id="searchList"
-        class="position-absolute w-100 list-group"
-        ></ul>
+                    <div class="dropdown">
+                        <a
+                            class="app-icon-button avatar-trigger dropdown-toggle d-flex align-items-center hidden-arrow"
+                            href="#"
+                            id="navbarDropdownMenuAvatar"
+                            role="button"
+                            data-mdb-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <img src="{{ current_user | photo }}" class="rounded-circle" alt="{{ current_user.fname }}">
+                            <span class="visually-hidden-mobile">{{ current_user.fname }}</span>
+                        </a>
+                        <ul
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdownMenuAvatar"
+                        >
+                            <li><a class="dropdown-item" href="#">{{ current_user.fname }}</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('album.get_settings') }}">Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {% else %}
+                <div class="d-flex align-items-center justify-content-end app-nav-actions">
+                    <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">Login</a>
+                    <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Register</a>
+                </div>
+            {% endif %}
         </div>
-      </form>
     </div>
-    {% if current_user.is_authenticated %}
-    
-    <div class="d-flex mb-2 align-items-center">
-        <div class="dropdown">
-        <a
-          class="link-secondary me-3 dropdown-toggle hidden-arrow"
-          href="#"
-          id="navbarDropdownMenuLink"
-          role="button"
-          data-mdb-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i class="fas fa-bell"></i>
-          <span id="notificationCount" class="badge rounded-pill badge-notification bg-secondary">0</span>
-        </a>
-        <ul id="notificationList"
-          class="dropdown-menu dropdown-menu-end"
-          aria-labelledby="navbarDropdownMenuLink"
-        >
-
-        </ul>
-      </div>
-      <div class="dropdown">
-        <a
-          class="dropdown-toggle d-flex align-items-center hidden-arrow"
-          href="#"
-          id="navbarDropdownMenuAvatar"
-          role="button"
-          data-mdb-toggle="dropdown"
-          aria-expanded="false"
-          style="color:gray"
-        >
-            <img height="22" width="22" src={{ current_user | photo }} class="rounded-circle" ></img>
-        </a>
-        <ul
-          class="dropdown-menu dropdown-menu-end"
-          aria-labelledby="navbarDropdownMenuAvatar"
-        >
-          <li>
-            <a class="dropdown-item" href="#">{{current_user.fname}}</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{ url_for("album.get_settings") }}">Settings</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    {% else %}
-    <a class="btn btn-secondary" href="{{url_for('auth.login')}}">Login</a>
-    <a class="btn btn-secondary ms-1" href="{{url_for('auth.register')}}">Register</a>
-    {% endif %}
-  </div>
 </nav>
-
