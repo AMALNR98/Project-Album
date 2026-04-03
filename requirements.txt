@@ -1,0 +1,11 @@
+click
+email-validator
+Flask
+Flask-Cors
+Flask-Login
+Flask-Reuploaded
+Flask-SQLAlchemy
+Flask-WTF
+SQLAlchemy
+timeago
+WTForms
