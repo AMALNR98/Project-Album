@@ -1,9 +1,14 @@
-
-  <div class="col-6 col-md-4 col-lg-3 mb-4">
-      <div class="card mx-auto text-center">
-        <a href="{{url_for('album.view_photo', user_id=user.slugified_id(), album_name=album_name, photo_name=photo.name)}}">
-            <img height="150px" class="card-img" src="{{url_for('static', filename=photo_path)}}" alt="{{photo.name}}">
+<div class="col-6 col-md-4 col-lg-3">
+    <article class="card media-card">
+        <a class="media-card__link" href="{{ url_for('album.view_photo', user_id=user.slugified_id(), album_name=album_name, photo_name=photo.name) }}">
+            <div class="media-card__visual">
+                <img src="{{ url_for('static', filename=photo_path) }}" alt="{{ photo.name }}">
+            </div>
         </a>
-        
-      </div>
-    </div>
+        <div class="media-card__body">
+            <p class="media-card__meta">{{ photo.uploaded_date | fromnow if photo.uploaded_date else 'Recently added' }}</p>
+            <h2 class="media-card__title">{{ photo.name }}</h2>
+            <p class="media-card__meta">{{ photo.description if photo.description else 'No description added yet.' }}</p>
+        </div>
+    </article>
+</div>
