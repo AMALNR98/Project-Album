@@ -1,1 +1,14 @@
-404 not found
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="empty-state">
+        <p class="eyebrow">404</p>
+        <h1 class="page-title">Page not found</h1>
+        <p class="page-subtitle">The destination you requested is unavailable or may have moved. Use the navigation to return to your albums.</p>
+        <div class="guest-actions mt-3">
+            <a class="btn btn-primary" href="{{ url_for('album.index') }}">Back home</a>
+        </div>
+    </section>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
