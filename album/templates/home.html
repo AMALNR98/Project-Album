@@ -1,18 +1,26 @@
 {% extends 'base.html' %}
-{% block content %}
-<div class="row">
-{% if current_user.is_authenticated %}
-    {% for album in albums %}
-        {% include 'includes/album_card.html'%}
-    {% endfor %}
-    {% include 'includes/post_album.html' %}
-{% endif %}
 
-</div>
+{% block content %}
+    <div class="page-hero">
+        <div>
+            <p class="eyebrow">Dashboard</p>
+            <h1 class="page-title">Your visual library</h1>
+            <p class="page-subtitle">A cleaner, faster album workspace with elevated cards, better hierarchy, and room to keep growing your collection.</p>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        {% if current_user.is_authenticated %}
+            {% for album in albums %}
+                {% include 'includes/album_card.html' %}
+            {% endfor %}
+            {% include 'includes/post_album.html' %}
+        {% endif %}
+    </div>
 {% endblock %}
+
 {% block sidebar %}
     {% if current_user.is_authenticated %}
         {% include 'includes/sidebar_profile.html' %}
     {% endif %}
 {% endblock %}
-
